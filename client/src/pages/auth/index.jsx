@@ -7,18 +7,22 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client.js";
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
+  const navigate = useNavigate()
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const[loginemail,setloginemail]=useState('')
+  const[loginpass,setloginpass]=useState('')
   const [confirmPass, setconfirmPass] = useState("");
 
   const validateLogin = () => {
-    if (!email.length) {
+    if (!loginemail.length) {
       toast.error("Email is required!");
       return false;
     }
-    if (!password.length) {
+    if (!loginpass.length) {
       toast.error("Password is required!");
       return false;
     }
@@ -45,9 +49,16 @@ const Auth = () => {
     if (validateLogin()) {
       const res = await apiClient.post(
         LOGIN_ROUTE,
-        { email, password },
+        { email : loginemail, password : loginpass },
         { withCredentials: true }
       )
+      if(res.data.user.id){
+        if(res.data.user.profileSetup){
+          navigate('/chat')
+        }else{
+          navigate('/profile')
+        }
+      }
       console.log(res);
     }
   };
@@ -60,6 +71,9 @@ const Auth = () => {
         { email, password },
         { withCredentials: true }
       );
+      if(res.status == 200 ){
+        navigate('/profile')
+      }
       console.log(res);
     }
   };
@@ -80,7 +94,7 @@ const Auth = () => {
             </p>
           </div>
           <div className="flex items-center justify-center w-full">
-            <Tabs className="w-3/4">
+            <Tabs className="w-3/4" defaultValue="login">
               <TabsList className="bg-transparent rounded-none w-full">
                 <TabsTrigger
                   value="login"
@@ -101,14 +115,14 @@ const Auth = () => {
                 <Input
                   placeholder="Email"
                   className="rounded-full p-6"
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
+                  value={loginemail}
+                  onChange={(e) => setloginemail(e.target.value)}
                 />
                 <Input
                   placeholder="Password"
                   className="rounded-full p-6"
-                  value={password}
-                  onChange={(e) => setpassword(e.target.value)}
+                  value={loginpass}
+                  onChange={(e) => setloginpass(e.target.value)}
                 />
 
                 <Button className="rounded-full p-6" onClick={handleLogin}>

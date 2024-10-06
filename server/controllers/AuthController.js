@@ -1,6 +1,7 @@
 import { response } from "express"
 import User from "../models/UserModel.js"
 import jwt from 'jsonwebtoken'
+import { compare } from "bcrypt"
 const maxAge = 3 * 24 * 60 * 60 * 1000
 
 const createToken = (email, userId) => {
@@ -39,8 +40,10 @@ export const login = async (req, res, next) => {
     
     try {
         const { email, password } = req.body
-        if (!email || !password) return res.status(400).send('emial and password is required')
+        if (!email || !password) return res.status(400).send('email and password is required')
         const user = await User.findOne({ email })
+    console.log('user',user);
+    
         if(!user){
             return res.status(404).send('user with the given email not found !')
         }
