@@ -12,15 +12,15 @@ const port = process.env.PORT || 3001;
 const dbUrl = process.env.DATABASE_URL || 'mongodb://localhost:27017/'
 
 app.use(cors({
-    origin: [process.env.ORIGIN] ,
-    methods:["GET","POST",'PUT','DELETE'],
-    credentials : true,
+    origin: [process.env.ORIGIN],
+    methods: ["GET", "POST", 'PUT', 'DELETE'],
+    credentials: true,
 }))
 
 app.use(cookieParser())
 app.use(express.json())
 
-app.use('/api/auth',authRoutes)
+app.use('/api/auth', authRoutes)
 
 
 
@@ -31,4 +31,10 @@ const server = app.listen(port, () => {
 mongoose
     .connect(dbUrl)
     .then(() => console.log('DB connected Successfully'))
-    .catch(err => console.log(err.message))
+    .catch(err => {
+        if (err.code == 'ECONNREFUSED') {
+            console.log('Netwok error')
+        } else {
+            console.log(err.message);
+        }
+    })
