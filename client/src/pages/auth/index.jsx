@@ -8,13 +8,15 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client.js";
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
+import { useAppStore } from "@/store";
 
 const Auth = () => {
   const navigate = useNavigate()
+  const { setUserInfo } = useAppStore()
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const[loginemail,setloginemail]=useState('')
-  const[loginpass,setloginpass]=useState('')
+  const [loginemail, setloginemail] = useState('')
+  const [loginpass, setloginpass] = useState('')
   const [confirmPass, setconfirmPass] = useState("");
 
   const validateLogin = () => {
@@ -49,13 +51,14 @@ const Auth = () => {
     if (validateLogin()) {
       const res = await apiClient.post(
         LOGIN_ROUTE,
-        { email : loginemail, password : loginpass },
+        { email: loginemail, password: loginpass },
         { withCredentials: true }
       )
-      if(res.data.user.id){
-        if(res.data.user.profileSetup){
+      if (res.data.user.id) {
+        setUserInfo(res.data.user)
+        if (res.data.user.profileSetup) {
           navigate('/chat')
-        }else{
+        } else {
           navigate('/profile')
         }
       }
@@ -71,7 +74,8 @@ const Auth = () => {
         { email, password },
         { withCredentials: true }
       );
-      if(res.status == 200 ){
+      if (res.status == 200) {
+        setUserInfo(res.data.user)
         navigate('/profile')
       }
       console.log(res);
