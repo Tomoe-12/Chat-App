@@ -77,3 +77,27 @@ export const login = async (req, res, next) => {
 
     }
 }
+
+export const getUserInfo = async (req, res, next) => {
+    try {
+        console.log(req.userId);
+        const userData = await User.findById(req.userId)
+        console.log(userData);
+        
+        if (!userData) {
+            return res.status(404).send('User with the given id not found')
+        }
+        return res.status(200).json({
+            id: userData.id,
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            image: userData.image,
+            color: userData.color,
+            profileSetup: userData.profileSetup
+        })
+    } catch (error) {
+        console.log({ error });
+        return res.status(500).send('inter server error')
+    }
+}
