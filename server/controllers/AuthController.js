@@ -1,4 +1,4 @@
-import { response } from "express"
+import { request, response } from "express"
 import User from "../models/UserModel.js"
 import jwt from 'jsonwebtoken'
 import { compare } from "bcrypt"
@@ -83,7 +83,7 @@ export const getUserInfo = async (req, res, next) => {
         console.log(req.userId);
         const userData = await User.findById(req.userId)
         console.log(userData);
-        
+
         if (!userData) {
             return res.status(404).send('User with the given id not found')
         }
@@ -96,6 +96,45 @@ export const getUserInfo = async (req, res, next) => {
             color: userData.color,
             profileSetup: userData.profileSetup
         })
+    } catch (error) {
+        console.log({ error });
+        return res.status(500).send('inter server error')
+    }
+}
+
+export const updateProfile = async (req, res, next) => {
+    console.log(req);
+
+    try {
+
+        const { userId } = req
+        console.log(req);
+
+        const { firstName, lastName, color } = req.body
+        if (!firstName || !lastName) {
+            return res.status(404).send('First Name , Last Name and color is required')
+        }
+
+        const userData = await User.findByIdAndUpdate(userId, {
+            firstName,
+            lastName,
+            color,
+            profileSetup: true
+        }, { new: true, runValidators: true })
+
+        console.log('dinal daa', userData);
+
+        return res.status(200).json({
+            id: userData.id,
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            image: userData.image,
+            color: userData.color,
+            profileSetup: userData.profileSetup
+        })
+
+
     } catch (error) {
         console.log({ error });
         return res.status(500).send('inter server error')
