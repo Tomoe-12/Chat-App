@@ -10,7 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
-import { UPDATE_PROFILE_ROUTE } from "@/utils/constants";
+import {
+  ADD_PROFILE_IMAGE_ROUTE,
+  HOST,
+  REMOVE_ROFILE_IMAGE_ROUTE,
+  UPDATE_PROFILE_ROUTE,
+} from "@/utils/constants";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -20,6 +27,18 @@ const Profile = () => {
   const [image, setImage] = useState(null);
   const [hovered, setHovered] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (userInfo.profileSetup) {
+      setFirstName(userInfo.firstName);
+      setLastName(userInfo.lastName);
+      setSelectedColor(userInfo.color);
+    }
+    if (userInfo.image) {
+      setImage(`${HOST}/${userInfo.image}`);
+    }
+  }, [userInfo]);
 
   const validateProfile = () => {
     if (!firstName) {
@@ -39,10 +58,10 @@ const Profile = () => {
           { firstName, lastName, color: selectedColor },
           { withCredentials: true }
         );
-        if(res.status === 200 && res.data){
-          setUserInfo({...res.data})
-          toast.success('Profile Updated successfully ! ')
-          navigate('/chat')
+        if (res.status === 200 && res.data) {
+          setUserInfo({ ...res.data });
+          toast.success("Profile Updated successfully ! ");
+          navigate("/chat");
         }
       } catch (error) {
         console.log(error);
@@ -50,10 +69,53 @@ const Profile = () => {
     }
   };
 
+  const handleNavigate = () => {
+    if (userInfo.profileSetup) {
+      navigate("/chat");
+    } else {
+      toast.error("Please setup Profile");
+    }
+  };
+
+  const handleFileInputClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+    if (file) {
+      const formData = new FormData();
+      formData.append("profile-image", file);
+      const res = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
+        withCredentials: true,
+      });
+      if (res.status == 200 && res.data.image) {
+        setUserInfo({ ...userInfo, image: res.data.image });
+        toast.success("Image updated successfully ");
+      }
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    try {
+      const res = await apiClient.delete(REMOVE_ROFILE_IMAGE_ROUTE, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        setUserInfo({ ...userInfo, image: null });
+        toast('image remove successfully ')
+        setImage(null)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-[#1b1c24] h-[100vh] flex items-center justify-center flex-col gap-10">
       <div className="flex flex-col gap-10 w-[80vw] md:w-max ">
-        <div>
+        <div onClick={handleNavigate}>
           <IoArrowBack className="text-4xl lg:text-6xl text-white/90 cursor-pointer " />
         </div>
         <div className="grid grid-cols-2">
@@ -82,7 +144,10 @@ const Profile = () => {
               )}
             </Avatar>
             {hovered && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 cursor-pointer rounded-full">
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 cursor-pointer rounded-full"
+                onClick={image ? handleDeleteImage : handleFileInputClick}
+              >
                 {image ? (
                   <FaTrash className="text-white text-3xl cursor-pointer" />
                 ) : (
@@ -90,7 +155,14 @@ const Profile = () => {
                 )}
               </div>
             )}
-            {/* input type='text' */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleImageChange}
+              name="profile-image"
+              accept=".png , .jpg ,  .jpeg ,  .svg , .webp"
+            />
           </div>
           <div className="flex min-w-32 md:min-w-64 text-white gap-5 flex-col items-center justify-center">
             <div className="w-full">
@@ -139,7 +211,7 @@ const Profile = () => {
         </div>
         <div className="w-full">
           <Button
-            className={`h-16 w-full bg-primaryColor hover:bg-purple-900 transition-all duration-200  ${getColor(
+            className={`h-16 w-full bg-primaryColor transition-all duration-200  ${getColor(
               selectedColor
             )}`}
             onClick={saveChanges}
