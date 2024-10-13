@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }) => {
 
 const AuthRoute = ({ children }) => {
   const { userInfo } = useAppStore()
-  return userInfo ? <Navigate to='/' /> : children
+  return userInfo ? <Navigate to='/chat' /> : children
 }
 
 const App = () => {

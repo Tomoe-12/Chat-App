@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import {
   ADD_PROFILE_IMAGE_ROUTE,
-  HOST,
   REMOVE_ROFILE_IMAGE_ROUTE,
   UPDATE_PROFILE_ROUTE,
 } from "@/utils/constants";

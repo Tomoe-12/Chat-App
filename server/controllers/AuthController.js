@@ -27,9 +27,6 @@ export const signup = async (req, res, next) => {
             user: {
                 id: user.id,
                 email: user.email,
-                // firstName : user.firstName,
-                // lastName : user.lastName,
-                // image : user.image,
                 profileSetup: user.profileSetup
             }
         })
@@ -189,33 +186,6 @@ export const addProfileImage = async (req = request, res = response) => {
     }
 };
 
-// export const removeProfileImage = async (req, res, next) => {
-//     try {
-//         const { userId } = req
-//         const user = await User.findById(userId)
-
-//         if (!user || !user.image) {
-//             return res.status(404).json({ message: 'Image not Found ' })
-//         }
-
-//         if (user.image) {
-//             unlinkSync(user.image)
-//         }
-//         // Delete the image from Appwrite
-//         await storage.deleteFile(BUCKET_ID, user.image);
-
-//         // Update the user's profile to remove the image reference
-//         user.image = null;
-//         await user.save();
-
-//         return res.status(200).send('Profile Image removed successfully !')
-
-
-//     } catch (error) {
-//         console.log({ error });
-//         return res.status(500).send('internal server error')
-//     }
-// }
 export const removeProfileImage = async (req, res, next) => {
     try {
         const { userId } = req;
