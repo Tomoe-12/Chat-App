@@ -28,6 +28,7 @@ const Profile = () => {
   const [hovered, setHovered] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);
   const fileInputRef = useRef(null);
+  console.log("user image", userInfo.image);
 
   useEffect(() => {
     if (userInfo.profileSetup) {
@@ -36,18 +37,21 @@ const Profile = () => {
       setSelectedColor(userInfo.color);
     }
     if (userInfo.image) {
-      setImage(`${HOST}/${userInfo.image}`);
+      setImage(`${userInfo.image}`);
     }
   }, [userInfo]);
 
   const validateProfile = () => {
+    let valid = true;
     if (!firstName) {
-      toast.error("First Name is required !");
+      toast.error("First Name is required!");
+      valid = false;
     }
     if (!lastName) {
-      toast.error("Last name is required !");
+      toast.error("Last Name is required!");
+      valid = false;
     }
-    return true;
+    return valid;
   };
 
   const saveChanges = async () => {
@@ -83,16 +87,20 @@ const Profile = () => {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    console.log(file);
     if (file) {
       const formData = new FormData();
       formData.append("profile-image", file);
-      const res = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
-        withCredentials: true,
-      });
-      if (res.status == 200 && res.data.image) {
-        setUserInfo({ ...userInfo, image: res.data.image });
-        toast.success("Image updated successfully ");
+      try {
+        const res = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
+          withCredentials: true,
+        });
+        if (res.status === 200 && res.data.image) {
+          setUserInfo({ ...userInfo, image: res.data.image });
+          toast.success("Image updated successfully");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Error updating image");
       }
     }
   };
@@ -104,11 +112,12 @@ const Profile = () => {
       });
       if (res.status === 200) {
         setUserInfo({ ...userInfo, image: null });
-        toast('image remove successfully ')
-        setImage(null)
+        toast("image remove successfully ");
+        setImage(null);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Error removing image");
     }
   };
 

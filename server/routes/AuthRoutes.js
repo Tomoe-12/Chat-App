@@ -5,7 +5,8 @@ import multer from 'multer'
 
 
 const authRoutes = Router()
-const upload = multer({ dest: "upload/profile/" })
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 
 authRoutes.post('/signup', signup)

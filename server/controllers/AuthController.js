@@ -2,8 +2,9 @@ import { request, response } from "express"
 import User from "../models/UserModel.js"
 import jwt from 'jsonwebtoken'
 import { compare } from "bcrypt"
-import { renameSync, unlink, unlinkSync } from 'fs'
-
+import { unlinkSync } from 'fs'
+import { BUCKET_ID, storage, ENDPOINT, PROJECT_ID } from '../lib/appwrite.config.js'
+import fs from 'fs'
 const maxAge = 3 * 24 * 60 * 60 * 1000
 
 const createToken = (email, userId) => {
@@ -138,51 +139,104 @@ export const updateProfile = async (req, res, next) => {
         return res.status(500).send('inter server error')
     }
 }
+export const addProfileImage = async (req = request, res = response) => {
+    const { userId } = req; // Extract user ID from your authentication middleware
+    const file = req.file; // Retrieve the uploaded file from the request
+    console.log('file', file);
 
-export const addProfileImage = async (req, res, next) => {
+    // Find the user by ID
+    const user = await User.findById(userId);
+    console.log('user', user);
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+    }
+
     try {
-        if (!req.file) {
-            return res.status(400).send('image is required')
-        }
+        // // Upload the image file to Appwrite
+        const fileBuffer = file.buffer
+        const size = file.size
+        const fileName = file.originalname
+        const mimeType = file.mimetype
 
-        const date = Date.now()
-        let fileName = 'upload/profile/' + date + req.file.originalname
-        renameSync(req.file.path, fileName)
+        // Upload the image file to Appwrite
+        const result = await storage.createFile(
+            BUCKET_ID,
+            'unique()',
+            new File([fileBuffer], fileName, { type: mimeType, size: size })
+        )
 
-        const updatedUser = await User.findByIdAndUpdate(req.userId,
-            { image: fileName, },
+        console.log("result", result);
+
+
+
+        const imageUrl = `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${result.$id}/view?project=${PROJECT_ID}`;
+        console.log('imageurl', imageUrl);
+
+        const updatedUser = await User.findByIdAndUpdate(userId,
+            { image: imageUrl, },
             { new: true, runValidators: true }
         )
 
-        return res.status(200).json({
-            image : updatedUser.image
-        })
-    } catch (error) {
-        console.log({ error });
-        return res.status(500).send('inter server error')
-    }
-}
+        if (!result || !updatedUser) {
+            return res.status(500).json({ error: 'Error creating Image ' })
+        }
 
+        return res.status(200).json({ image: imageUrl });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error uploading image" });
+    }
+};
+
+// export const removeProfileImage = async (req, res, next) => {
+//     try {
+//         const { userId } = req
+//         const user = await User.findById(userId)
+
+//         if (!user || !user.image) {
+//             return res.status(404).json({ message: 'Image not Found ' })
+//         }
+
+//         if (user.image) {
+//             unlinkSync(user.image)
+//         }
+//         // Delete the image from Appwrite
+//         await storage.deleteFile(BUCKET_ID, user.image);
+
+//         // Update the user's profile to remove the image reference
+//         user.image = null;
+//         await user.save();
+
+//         return res.status(200).send('Profile Image removed successfully !')
+
+
+//     } catch (error) {
+//         console.log({ error });
+//         return res.status(500).send('internal server error')
+//     }
+// }
 export const removeProfileImage = async (req, res, next) => {
     try {
-        const { userId } = req
-        const user = await User.findById(userId)
+        const { userId } = req;
+        const user = await User.findById(userId);
+        console.log('user', user);
 
-        if(!user) {
-            return res.status(404).send('User not found ')
+        if (!user || !user.image) {
+            return res.status(404).json({ message: 'User And Image not found' });
         }
 
-        if(user.image) {
-            unlinkSync(user.image)
-        }
-        user.image = null
-        await user.save()
-      
-        return res.status(200).send('Profile Image removed successfully !')
+        // Delete the image from Appwrite
+        const fileId = user.image.split('/').slice(-2, -1)[0];
+        await storage.deleteFile(BUCKET_ID, fileId);
 
+        // Update the user's profile to remove the image reference
+          user.image = null;
+          await user.save();
 
+          return res.status(200).send('Profile image removed successfully!');
     } catch (error) {
         console.log({ error });
-        return res.status(500).send('inter server error')
+        return res.status(500).send('Internal server error');
     }
-}
+};

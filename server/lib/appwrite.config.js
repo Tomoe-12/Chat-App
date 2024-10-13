@@ -1,23 +1,27 @@
-const sdk = require('node-appwrite')
+import { Client, Storage } from 'node-appwrite';
+
+import dotenv from 'dotenv'
+dotenv.config()
 
 const {
     PROJECT_ID,
     API_KEY,
     PUBLIC_BUCKET_ID: BUCKET_ID,
     PUBLIC_ENDPOINT: ENDPOINT
-} = process.env
+} = process.env;
 
-const client = new sdk.Client()
-    .setEndpoint(process.env.PUBLIC_ENDPOINT)
-    .setProject(process.env.PROJECT_ID)
-    .setKey(process.env.API_KEY); // Use the API key from the environment variable
+const client = new Client()
+    .setEndpoint(ENDPOINT)
+    .setProject(PROJECT_ID)
+    .setKey(API_KEY); // Use the API key from the environment variable
 
-const storage = new sdk.Storage(client)
+const storage = new Storage(client);
 
-module.exports = {
+// Use ES module export syntax
+export {
     PROJECT_ID,
     API_KEY,
     BUCKET_ID,
     ENDPOINT,
     storage,
-}
+};
