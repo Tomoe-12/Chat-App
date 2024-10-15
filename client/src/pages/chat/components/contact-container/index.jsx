@@ -1,3 +1,5 @@
+import ProfileInfo from "./components/profile-info";
+
 const ContactContainer = () => {
   return (
     <div className="relative md:w-[35vw] lg:w-[33vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b]  w-full ">
@@ -9,6 +11,12 @@ const ContactContainer = () => {
           <Title text="Direct Messages" />
         </div>
       </div>
+      <div className="my-5">
+        <div className="flex items-center justify-between pr-10">
+          <Title text="Channels" />
+        </div>
+      </div>
+      <ProfileInfo/>
     </div>
   );
 };
@@ -30,17 +38,17 @@ const Logo = () => {
           <path
             d="M55.5 0H77.5L58.5 32H36.5L55.5 0Z"
             className="ccustom"
-            fill="#8338ec"
+            fill="#1DA1F2" // Primary Blue
           ></path>{" "}
           <path
             d="M35.5 0H51.5L32.5 32H16.5L35.5 0Z"
             className="ccompli1"
-            fill="#975aed"
+            fill="#9B59B6" // Muted Purple
           ></path>{" "}
           <path
             d="M19.5 0H31.5L12.5 32H0.5L19.5 0Z"
             className="ccompli2"
-            fill="#a16ee8"
+            fill="#4CAF50" // Green
           ></path>{" "}
         </svg>
         <span className="text-3xl font-semibold ">ThiThi</span>
