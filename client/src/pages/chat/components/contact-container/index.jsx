@@ -53,7 +53,7 @@ const Logo = () => {
             fill="#4CAF50" // Green
           ></path>{" "}
         </svg>
-        <span className="text-3xl font-semibold ">ThiThi</span>
+        <span className="text-3xl font-semibold ">ThiThiSpeak</span>
       </div>
     );
   };
