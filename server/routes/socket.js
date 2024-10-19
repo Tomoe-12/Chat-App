@@ -1,5 +1,6 @@
 import { disconnect } from 'mongoose'
 import { Server as SockerIOServer } from 'socket.io'
+import Message from '../models/MessagesModel.js'
 const setupSocket = (server) => {
     const io = new SockerIOServer(server, {
         cors: {
@@ -20,7 +21,25 @@ const setupSocket = (server) => {
             }
         }
     }
-    
+
+    const sendMessage = async (message) => {
+        const senderSocketId = userScoketMap.get(message.sender)
+        const recipientSocketId = userScoketMap.get(message.recipient)
+
+        const createMessage = await Message.create(message)
+
+        const messageData = await Message.findById(createMessage._id)
+        .populate('sender', "id email firstName lastName image color")
+        .populate('recipient', "id email firstName lastName image color")
+
+        if(recipientSocketId){
+            io.to(recipientSocketId).emit('recieveMessage', messageData)
+        }
+        if(senderSocketId){
+            io.to(senderSocketId).emit('recieveMessage', messageData)
+        }
+    }
+
     io.on('connection', (socket) => {
         const userId = socket.handshake.query.userId
 
@@ -32,6 +51,7 @@ const setupSocket = (server) => {
             console.log('user id not provided during connection ');
         }
 
+        socket.on('sendMessage', sendMessage)
         socket.on('disconnect', () => disconnect(socket))
     })
 }
