@@ -23,7 +23,7 @@ const MessageContainer = () => {
           { id: selectedChatData._id },
           { withCredentials: true }
         );
-        console.log('res : ',res);
+        console.log('all messages ',res);
         
         if (res.data.messages) {
           setSelectedChatMessage(res.data.messages);
@@ -34,7 +34,6 @@ const MessageContainer = () => {
     };
     if (selectedChatData._id) {
       if (selectedChatType === "contact") {
-        console.log('enter');
         getMessages();
       }
     }
@@ -48,7 +47,7 @@ const MessageContainer = () => {
 
   const renderMessages = () => {
     if (!selectedChatMessage || selectedChatMessage.length === 0) {
-      return <div>No messages available.</div>;
+      return <div>No messages available. put some image here </div>;
     }
     let lastDate = null;
     return selectedChatMessage.map((message, i) => {
