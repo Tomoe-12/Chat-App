@@ -51,6 +51,7 @@ const MessageBar = () => {
       fileInputRef.current.click();
     }
   };
+
   const handleAttachmentChange = async (e) => {
     try {
       const file = e.target.files[0];
@@ -60,6 +61,8 @@ const MessageBar = () => {
         const res = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {
           withCredentials: true,
         });
+        console.log('res : from image :::  ',res);
+        
 
         if (res.status === 200 && res.data) {
           if (selectedChatType === "contact") {
@@ -68,7 +71,7 @@ const MessageBar = () => {
               content: undefined,
               recipient: selectedChatData._id,
               messageType: "file",
-              fileURL: res.data.filePath,
+              fileURL: res.data.fileURL,
             });
           }
         }

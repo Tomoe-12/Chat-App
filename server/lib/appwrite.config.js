@@ -6,9 +6,10 @@ dotenv.config()
 const {
     PROJECT_ID,
     API_KEY,
-    PUBLIC_BUCKET_ID: BUCKET_ID,
+    PUBLIC_BUCKET_ID_PROFILE: PROFILE_IMAGE,
+    PUBLIC_BUCKET_ID_MESSAGE_FILE : MESSAGE_FILE ,
     PUBLIC_ENDPOINT: ENDPOINT
-} = process.env;
+} = process.env
 
 const client = new Client()
     .setEndpoint(ENDPOINT)
@@ -21,7 +22,8 @@ const storage = new Storage(client);
 export {
     PROJECT_ID,
     API_KEY,
-    BUCKET_ID,
+    PROFILE_IMAGE,
+    MESSAGE_FILE,
     ENDPOINT,
     storage,
 };

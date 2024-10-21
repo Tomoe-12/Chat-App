@@ -69,14 +69,36 @@ const MessageContainer = () => {
     });
   };
 
-  const checkIfImage = (filePath) => {
-    const imageRegex =
-      /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
-    return imageRegex.test(filePath);
+  // const checkIfImage = (filePath) => {
+  //   const imageRegex =
+  //     /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
+  //   return imageRegex.test(filePath);
+  // };
+  const checkIfImage = (fileURL) => {
+    // Extract the 'type' parameter from the URL
+    const urlParams = new URLSearchParams(fileURL.split("?")[1]);
+    const fileType = urlParams.get("type");
+
+    // List of image MIME types
+    const imageMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/bmp",
+      "image/tiff",
+      "image/webp",
+      "image/svg+xml",
+      "image/vnd.microsoft.icon",
+      "image/heic",
+      "image/heif",
+    ];
+
+    // Check if the file type matches any of the image MIME types
+    return imageMimeTypes.includes(fileType);
   };
 
   const downloadFile = async (url) => {
-    const res = await apiClient.get(`${HOST}/${url}`, { responseType: "blob" });
+    const res = await apiClient.get(`${url}`, { responseType: "blob" });
     const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement("a");
     link.href = urlBlob;
@@ -110,22 +132,18 @@ const MessageContainer = () => {
             message.sender !== selectedChatData._id
               ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50  "
               : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20"
-          } border inline-block p-4 rounded my-1 max-w-[50%] break-words `}
+          } border inline-block p-2 rounded my-1 max-w-[50%] break-words `}
         >
           {checkIfImage(message.fileURL) ? (
             <div className=" cursor-pointer ">
-              <img
-                src={`${HOST}/${message.fileURL}`}
-                height={300}
-                width={300}
-                alt=""
-              />
+              <img src={message.fileURL} height={300} width={300} alt="" />
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-4  ">
+            <div className="flex items-center justify-center gap-4 ">
               <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3 ">
                 <MdFolderZip />
               </span>
+              {/* file anme  */}
               <span>{message.fileURL.split("/").pop()}</span>
               <span
                 className=" bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300 "

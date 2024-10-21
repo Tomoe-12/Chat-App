@@ -3,7 +3,7 @@ import User from "../models/UserModel.js"
 import jwt from 'jsonwebtoken'
 import { compare } from "bcrypt"
 import { unlinkSync } from 'fs'
-import { BUCKET_ID, storage, ENDPOINT, PROJECT_ID } from '../lib/appwrite.config.js'
+import { PROFILE_IMAGE, storage, ENDPOINT, PROJECT_ID } from '../lib/appwrite.config.js'
 import fs from 'fs'
 const maxAge = 3 * 24 * 60 * 60 * 1000
 
@@ -158,16 +158,14 @@ export const addProfileImage = async (req = request, res = response) => {
 
         // Upload the image file to Appwrite
         const result = await storage.createFile(
-            BUCKET_ID,
+            PROFILE_IMAGE,
             'unique()',
             new File([fileBuffer], fileName, { type: mimeType, size: size })
         )
 
         console.log("result", result);
 
-
-
-        const imageUrl = `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${result.$id}/view?project=${PROJECT_ID}`;
+        const imageUrl = `${ENDPOINT}/storage/buckets/${PROFILE_IMAGE}/files/${result.$id}/view?project=${PROJECT_ID}`;
         console.log('imageurl', imageUrl);
 
         const updatedUser = await User.findByIdAndUpdate(userId,
@@ -198,7 +196,7 @@ export const removeProfileImage = async (req, res, next) => {
 
         // Delete the image from Appwrite
         const fileId = user.image.split('/').slice(-2, -1)[0];
-        await storage.deleteFile(BUCKET_ID, fileId);
+        await storage.deleteFile(PROFILE_IMAGE, fileId);
 
         // Update the user's profile to remove the image reference
         user.image = null;
