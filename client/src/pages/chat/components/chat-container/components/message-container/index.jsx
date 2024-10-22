@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
+import { getColor } from "@/lib/utils";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -72,7 +73,7 @@ const MessageContainer = () => {
   // const checkIfImage = (filePath) => {
   //   const imageRegex =
   //     /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
-  //   return imageRegex.test(filePath);
+  //   return imageRegex(filePath);
   // };
   const checkIfImage = (fileURL) => {
     // Extract the 'type' parameter from the URL
@@ -97,16 +98,30 @@ const MessageContainer = () => {
     return imageMimeTypes.includes(fileType);
   };
 
-  const downloadFile = async (url) => {
-    const res = await apiClient.get(`${url}`, { responseType: "blob" });
-    const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement("a");
-    link.href = urlBlob;
-    link.setAttribute("download", url.split("/").pop());
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(urlBlob);
+  const downloadFile = async (url, customFileName) => {
+    try {
+      const res = await apiClient.get(`${url}`, { responseType: "blob" });
+      const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = urlBlob;
+      // Set the custom file name
+      link.setAttribute("download", customFileName || url.split("/").pop());
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(urlBlob);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
+  const getFileNameFromUrl = (fileURL) => {
+    // Extract the 'fileName' parameter from the URL
+    const urlParams = new URLSearchParams(fileURL.split("?")[1]);
+    const fileName = urlParams.get("fileName");
+    console.log(fileName);
+    
+    return fileName;
   };
 
   const renderedMessages = (message) => (
@@ -119,42 +134,109 @@ const MessageContainer = () => {
         <div
           className={` ${
             message.sender !== selectedChatData._id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50  "
-              : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20"
+              ? ` ${getColor(
+                  userInfo.color
+                )} text-white rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
+              : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
           } border inline-block p-4 rounded my-1 max-w-[50%] break-words `}
         >
           {message.content}
         </div>
       )}
-      {message.messageType === "file" && (
+      {/* {message.messageType === "file" && (
         <div
           className={` ${
             message.sender !== selectedChatData._id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50  "
-              : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20"
+              ? ` ${getColor(
+                  userInfo.color
+                )} text-white  rounded-3xl rounded-br-none   ` //text-[#8417ff]/90 border-[#8417ff]/50
+              : " bg-[#2a2b33]/5 text-white border-[#ffffff]/20  rounded-3xl rounded-bl-none   "
           } border inline-block p-2 rounded my-1 max-w-[50%] break-words `}
         >
           {checkIfImage(message.fileURL) ? (
             <div className=" cursor-pointer ">
-              <img src={message.fileURL} height={300} width={300} alt="" />
+              <img
+                src={message.fileURL}
+                className={` ${
+                  message.sender !== selectedChatData._id
+                    ? "rounded-br-none"
+                    : "rounded-bl-none"
+                } rounded-3xl `}
+                height={300}
+                width={300}
+                alt=""
+              />
             </div>
           ) : (
             <div className="flex items-center justify-center gap-4 ">
-              <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3 ">
+              <span className=" text-white/80 text-3xl bg-black/20 rounded-full p-3 ">
                 <MdFolderZip />
               </span>
-              {/* file anme  */}
-              <span>{message.fileURL.split("/").pop()}</span>
+              <span className=" text-sm ">
+                {getFileNameFromUrl(message.fileURL)}
+              </span>
               <span
                 className=" bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300 "
-                onClick={() => downloadFile(message.fileURL)}
+                onClick={() =>
+                  downloadFile(
+                    message.fileURL,
+                    getFileNameFromUrl(message.fileURL)
+                  )
+                }
               >
                 <IoMdArrowRoundDown />
               </span>
             </div>
           )}
         </div>
-      )}
+      )} */}
+      {message.messageType === "file" && (
+  <div
+    className={`${
+      message.sender !== selectedChatData._id
+        ? `${getColor(userInfo.color)} text-white rounded-3xl rounded-br-none`
+        : "bg-[#2a2b33]/5 text-white border-[#ffffff]/20 rounded-3xl rounded-bl-none"
+    } border inline-block p-2 my-1 max-w-[50%] break-words`}
+  >
+    {checkIfImage(message.fileURL) ? (
+      <div className="cursor-pointer">
+        <img
+          src={message.fileURL}
+          className={`${
+            message.sender !== selectedChatData._id
+              ? "rounded-br-none"
+              : "rounded-bl-none"
+          } rounded-3xl`}
+          height={300}
+          width={300}
+          alt=""
+        />
+      </div>
+    ) : (
+      <div className="flex items-center justify-center gap-4">
+        <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
+          <MdFolderZip />
+        </span>
+        {/* File name with truncation */}
+        <span className="text-sm truncate max-w-[calc(100% - 100px)]">
+          {getFileNameFromUrl(message.fileURL)}
+        </span>
+        <span
+          className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
+          onClick={() =>
+            downloadFile(
+              message.fileURL,
+              getFileNameFromUrl(message.fileURL)
+            )
+          }
+        >
+          <IoMdArrowRoundDown />
+        </span>
+      </div>
+    )}
+  </div>
+)}
+
       <div className=" text-xs text-gray-600  ">
         {moment(message.timestamp).format("LT")}
       </div>
@@ -164,8 +246,7 @@ const MessageContainer = () => {
   return (
     <div className="flex-1 overflow-auto scrollbar-hidden p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full ">
       {renderMessages()}
-      <div ref={scrollRef} />
-    </div>
+      <div ref={scrollRef} />    </div>
   );
 };
 
