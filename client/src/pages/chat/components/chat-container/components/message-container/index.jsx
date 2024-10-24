@@ -8,6 +8,7 @@ import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
 import { getColor } from "@/lib/utils";
 import { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -20,6 +21,9 @@ const MessageContainer = () => {
     selectedChatMessage,
     setSelectedChatMessage,
   } = useAppStore();
+
+  const [showImage, setShowImage] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -53,7 +57,7 @@ const MessageContainer = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const container = document.getElementById('file-name-container');
+      const container = document.getElementById("file-name-container");
       if (container) {
         setContainerWidth(container.clientWidth);
       }
@@ -61,25 +65,25 @@ const MessageContainer = () => {
 
     // Measure initial width
     handleResize();
-    
+
     // Update on resize
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup listener on unmount
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-// Function to truncate the file name based on available width
-const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
-  const charWidth = fontSize * 0.6; // Rough estimate of character width
-  const maxChars = Math.floor(containerWidth / charWidth) - 10; // 10 characters reserved for "......" and padding
+  // Function to truncate the file name based on available width
+  const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
+    const charWidth = fontSize * 0.6; // Rough estimate of character width
+    const maxChars = Math.floor(containerWidth / charWidth) - 10; // 10 characters reserved for "......" and padding
 
-  if (fileName.length <= maxChars) return fileName;
+    if (fileName.length <= maxChars) return fileName;
 
-  const start = fileName.slice(0, Math.floor(maxChars / 2));
-  const end = fileName.slice(-Math.ceil(maxChars / 2));
-  return `${start}......${end}`;
-};
+    const start = fileName.slice(0, Math.floor(maxChars / 2));
+    const end = fileName.slice(-Math.ceil(maxChars / 2));
+    return `${start}......${end}`;
+  };
 
   const renderMessages = () => {
     if (!selectedChatMessage || selectedChatMessage.length === 0) {
@@ -103,11 +107,6 @@ const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
     });
   };
 
-  // const checkIfImage = (filePath) => {
-  //   const imageRegex =
-  //     /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
-  //   return imageRegex(filePath);
-  // };
   const checkIfImage = (fileURL) => {
     // Extract the 'type' parameter from the URL
     const urlParams = new URLSearchParams(fileURL.split("?")[1]);
@@ -176,16 +175,24 @@ const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
           {message.content}
         </div>
       )}
-        {message.messageType === "file" && (
+      {message.messageType === "file" && (
         <div
           className={` ${
             message.sender !== selectedChatData._id
-              ? ` ${getColor(userInfo.color)} text-white rounded-3xl rounded-br-none`
+              ? ` ${getColor(
+                  userInfo.color
+                )} text-white rounded-3xl rounded-br-none`
               : " bg-[#2a2b33]/5 text-white border-[#ffffff]/20 rounded-3xl rounded-bl-none"
           } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
         >
           {checkIfImage(message.fileURL) ? (
-            <div className="cursor-pointer">
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setShowImage(true);
+                setImageURL(message.fileURL);
+              }}
+            >
               <img
                 src={message.fileURL}
                 className={` ${
@@ -199,13 +206,19 @@ const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
               />
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-4" id="file-name-container">
+            <div
+              className="flex items-center justify-center gap-4"
+              id="file-name-container"
+            >
               <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
                 <MdFolderZip />
               </span>
               {/* Truncate file name based on container width */}
               <span className="text-sm">
-                {truncateFileName(getFileNameFromUrl(message.fileURL), containerWidth)}
+                {truncateFileName(
+                  getFileNameFromUrl(message.fileURL),
+                  containerWidth
+                )}
               </span>
               <span
                 className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
@@ -228,7 +241,31 @@ const truncateFileName = (fileName, containerWidth, fontSize = 18) => {
   return (
     <div className="flex-1 overflow-auto scrollbar-hidden p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full ">
       {renderMessages()}
-      <div ref={scrollRef} />{" "}
+      <div ref={scrollRef} />
+      {showImage && (
+        <div className="fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col">
+          <div>
+            <img src={imageURL} className="w-full h-[80vh] bg-cover" />
+          </div>
+          <div className="flex gap-5 fixed top-0 mt-5 ">
+            <button
+              className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
+              onClick={() => downloadFile(imageURL)}
+            >
+              <IoMdArrowRoundDown />
+            </button>
+            <button
+              className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
+              onClick={() => {
+                setShowImage(false);
+                setImageURL(null);
+              }}
+            >
+             <IoCloseSharp/>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
