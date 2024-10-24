@@ -65,7 +65,7 @@ export const uploadFile = async (req = request, res = response) => {
             'unique()',
             new File([fileBuffer], fileName, { type: fileMineType, size: size })
         )
-        const imageUrl = `${ENDPOINT}/storage/buckets/${MESSAGE_FILE}/files/${result.$id}/view?project=${PROJECT_ID}&type=${fileMineType}&fileName=${encodeURIComponent(fileName)}`;
+        const imageUrl = `${ENDPOINT}/storage/buckets/${MESSAGE_FILE}/files/${result.$id}/view?project=${PROJECT_ID}&type=${fileMineType}&fileName=${encodeURIComponent(fileName)}&fileSize=${size}`;
         console.log('result ', result);
 
 

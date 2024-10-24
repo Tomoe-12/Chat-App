@@ -69,7 +69,6 @@ const MessageBar = () => {
           withCredentials: true,
           onUploadProgress: (data) => {
             setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
-            
           },
         });
         console.log("res : from image :::  ", res);
