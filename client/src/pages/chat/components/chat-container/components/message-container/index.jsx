@@ -130,76 +130,7 @@ const MessageContainer = () => {
     return imageMimeTypes.includes(fileType);
   };
 
-  // const downloadFile = async (url, customFileName) => {
-  //   setIsDownloading(true);
-  //   setFileDownloadprogress(0);
-  //   try {
-  //     const res = await apiClient.get(`${url}`, {
-  //       responseType: "blob",
-  //       onDownloadProgress: (progressEvent) => {
-  //         const { loaded, total } = progressEvent;
-  //         console.log("dta ", loaded);
-  //         console.log("total", total);
 
-  //         console.log("data : ", Math.round((100 * loaded) /total));
-  //         const percentCompleted = Math.round((loaded * 100) / total);
-  //         setFileDownloadprogress(percentCompleted);
-  //       },
-  //     });
-  //     console.log('res' , res.data.size);
-      
-  //     const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
-  //     const link = document.createElement("a");
-  //     link.href = urlBlob;
-  //     // Set the custom file name
-  //     link.setAttribute("download", customFileName || url.split("/").pop());
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     link.remove();
-  //     window.URL.revokeObjectURL(urlBlob);
-  //     setIsDownloading(false);
-  //     setFileDownloadprogress(0);
-  //   } catch (error) {
-  //     console.error("Error downloading file:", error);
-  //   }
-  // };
-
-  // const downloadFile = async (url, customFileName) => {
-  //   setIsDownloading(true);
-  //   setFileDownloadprogress(0);
-  //   try {
-  //     const res = await apiClient.get(`${url}`, {
-  //       responseType: "blob",
-  //       onDownloadProgress: (progressEvent) => {
-  //         const { loaded, total } = progressEvent;
-  //         console.log("Loaded:", loaded);
-  //         if (total) {
-  //           console.log("Total:", total);
-  //           const percentCompleted = Math.round((100 * loaded) / total);
-  //           console.log("Progress:", percentCompleted);
-  //           setFileDownloadprogress(percentCompleted);
-  //         } else {
-  //           console.log("Total size not available");
-  //         }
-  //       },
-  //     });
-  
-  //     const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
-  //     const link = document.createElement("a");
-  //     link.href = urlBlob;
-  //     link.setAttribute("download", customFileName || url.split("/").pop());
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     link.remove();
-  //     window.URL.revokeObjectURL(urlBlob);
-  //     setIsDownloading(false);
-  //     setFileDownloadprogress(0);
-  //   } catch (error) {
-  //     console.error("Error downloading file:", error);
-  //     setIsDownloading(false);
-  //   }
-  // };
-  
   const downloadFile = async (url, customFileName) => {
     setIsDownloading(true);
     setFileDownloadprogress(0);

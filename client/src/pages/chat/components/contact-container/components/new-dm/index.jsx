@@ -1,3 +1,4 @@
+import AnimationContainer from "@/components/AnimationContainer";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -15,7 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { apiClient } from "@/lib/api-client";
-import { animationDefaultOptions, getColor } from "@/lib/utils";
+import { animationOptions, getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
 import { SEARCH_CONTACTS_ROUTES } from "@/utils/constants";
 import { useState } from "react";
@@ -131,12 +132,7 @@ const NewDM = () => {
           {searchedContacts.length === 0 &&
             !isSearching && ( // Only show Lottie when not searching
               <div className="flex-1 flex flex-col justify-center items-center duration-1000 transition-all">
-                <Lottie
-                  isClickToPauseDisabled={true}
-                  height={200}
-                  width={200}
-                  options={animationDefaultOptions}
-                />
+               <AnimationContainer animationType='contact' width={220} height={220} />
                 <div className="text-opacity-80 text-white flex flex-col gap-5 items-center lg:text-2xl text-xl transition-all duration-300 text-center">
                   <h3 className="font-lato">
                     Hi<span className="text-primaryColor">! </span>Search New{" "}

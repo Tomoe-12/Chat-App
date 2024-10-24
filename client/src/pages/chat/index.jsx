@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import ContactContainer from "./components/contact-container";
 import EmptyChatContainer from "./components/empty-chat-container";
 import ChatContainer from "./components/chat-container";
-
+import AnimationContainer from "@/components/AnimationContainer";
 const Chat = () => {
   const {
     userInfo,
@@ -16,8 +16,8 @@ const Chat = () => {
     fileDownloadprogress,
   } = useAppStore();
 
-  console.log('file downa',fileDownloadprogress);
-  
+  console.log("file downa", fileDownloadprogress);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +31,13 @@ const Chat = () => {
     <div className="flex h-[100vh] text-white overflow-hidden">
       {isUploading && (
         <div className="h-[100vh] w-[100vw] fixed top-0 z-10 left-0 bg-black/80 flex items-center justify-center flex-col ga-5 backdrop-blur-lg ">
-          <h5 className=" text-5xl animate-pulse  ">Uploading File</h5>
+          <AnimationContainer animationType="uploading" width={500} height={500} />
           {fileUploadProgress}%
         </div>
       )}
       {isDownloading && (
         <div className="h-[100vh] w-[100vw] fixed top-0 z-10 left-0 bg-black/80 flex items-center justify-center flex-col ga-5 backdrop-blur-lg ">
-          <h5 className=" text-5xl animate-pulse  ">Downloading File</h5>
+          <AnimationContainer animationType="downloading" width={500} height={500} />
           {fileDownloadprogress}%
         </div>
       )}
