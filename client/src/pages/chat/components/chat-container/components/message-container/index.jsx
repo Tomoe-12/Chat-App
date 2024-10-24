@@ -20,6 +20,8 @@ const MessageContainer = () => {
     userInfo,
     selectedChatMessage,
     setSelectedChatMessage,
+    setIsDownloading,
+    setFileDownloadprogress,
   } = useAppStore();
 
   const [showImage, setShowImage] = useState(false);
@@ -33,8 +35,6 @@ const MessageContainer = () => {
           { id: selectedChatData._id },
           { withCredentials: true }
         );
-        console.log("all messages ", res);
-
         if (res.data.messages) {
           setSelectedChatMessage(res.data.messages);
         }
@@ -131,8 +131,23 @@ const MessageContainer = () => {
   };
 
   const downloadFile = async (url, customFileName) => {
+    setIsDownloading(true);
+    setFileDownloadprogress(0);
     try {
-      const res = await apiClient.get(`${url}`, { responseType: "blob" });
+      const res = await apiClient.get(`${url}`, {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          console.log("dta ", loaded);
+          console.log("total", total);
+
+          console.log("data : ", Math.round((100 * loaded) / res.data.size));
+          const percentCompleted = Math.round((loaded * 100) / res.data.size);
+          setFileDownloadprogress(percentCompleted);
+        },
+      });
+      console.log('res' , res.data.size);
+      
       const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = urlBlob;
@@ -142,6 +157,8 @@ const MessageContainer = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(urlBlob);
+      setIsDownloading(false);
+      setFileDownloadprogress(0);
     } catch (error) {
       console.error("Error downloading file:", error);
     }
@@ -151,8 +168,6 @@ const MessageContainer = () => {
     // Extract the 'fileName' parameter from the URL
     const urlParams = new URLSearchParams(fileURL.split("?")[1]);
     const fileName = urlParams.get("fileName");
-    console.log(fileName);
-
     return fileName;
   };
 
@@ -261,7 +276,7 @@ const MessageContainer = () => {
                 setImageURL(null);
               }}
             >
-             <IoCloseSharp/>
+              <IoCloseSharp />
             </button>
           </div>
         </div>
