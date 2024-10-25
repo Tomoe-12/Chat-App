@@ -2,14 +2,21 @@ import { useEffect } from "react";
 import NewDM from "./components/new-dm";
 import ProfileInfo from "./components/profile-info";
 import { apiClient } from "@/lib/api-client";
-import { GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
+import {
+  GET_DM_CONTACTS_ROUTES,
+  GET_USER_CHANNEL_ROUTE,
+} from "@/utils/constants";
 import { useAppStore } from "@/store";
 import ContactList from "@/components/contact-list";
 import CreateChannel from "./components/create-channel";
 
 const ContactContainer = () => {
-  const { setDirectMessageContacts, directMessageContacts, channels } =
-    useAppStore();
+  const {
+    setDirectMessageContacts,
+    directMessageContacts,
+    channels,
+    setChannels,
+  } = useAppStore();
 
   useEffect(() => {
     const getContacts = async () => {
@@ -21,8 +28,20 @@ const ContactContainer = () => {
         setDirectMessageContacts(res.data.contacts);
       }
     };
+
+    const getChannels = async () => {
+      const res = await apiClient.get(GET_USER_CHANNEL_ROUTE, {
+        withCredentials: true,
+      });
+
+      if (res.data.channels) {
+        setChannels(res.data.channels);
+      }
+    };
+
     getContacts();
-  }, []);
+    getChannels()
+  }, [setChannels,setDirectMessageContacts]);
 
   return (
     <div className="relative md:w-[35vw] lg:w-[33vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b]  w-full ">
