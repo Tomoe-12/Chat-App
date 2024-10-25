@@ -8,7 +8,8 @@ import ContactList from "@/components/contact-list";
 import CreateChannel from "./components/create-channel";
 
 const ContactContainer = () => {
-  const { setDirectMessageContacts, directMessageContacts } = useAppStore();
+  const { setDirectMessageContacts, directMessageContacts, channels } =
+    useAppStore();
 
   useEffect(() => {
     const getContacts = async () => {
@@ -40,7 +41,10 @@ const ContactContainer = () => {
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Channels" />
-          <CreateChannel/>
+          <CreateChannel />
+        </div>
+        <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
+          <ContactList contacts={channels} isChannel={true} />
         </div>
       </div>
       <ProfileInfo />

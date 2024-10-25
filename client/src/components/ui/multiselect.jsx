@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable react/prop-types */
 "use client";
 
 import { Command as CommandPrimitive, useCommandState } from "cmdk";

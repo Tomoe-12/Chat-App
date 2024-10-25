@@ -1,5 +1,3 @@
-import AnimationContainer from "@/components/AnimationContainer";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import MultipleSelector from "@/components/ui/multiselect";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
   TooltipContent,
@@ -18,23 +15,22 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { apiClient } from "@/lib/api-client";
-import { animationOptions, getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
 import {
+  CREATE_CHANNEL_ROUTE,
   GET_ALL_CONTACTS_ROUTES,
-  SEARCH_CONTACTS_ROUTES,
 } from "@/utils/constants";
 import { useEffect } from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 const CreateChannel = () => {
-  const { setSelectedChatType, setSelectedChatData } = useAppStore();
+  const { setSelectedChatType, setSelectedChatData,  addChannel } =
+    useAppStore();
   const [newChannelModel, setNewChannelModel] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
-  const [isSearching, setIsSearching] = useState(false); // New state for tracking input activity
   const [allContacts, setAllContacts] = useState("");
-  const [selectedContact, setSelectedContact] = useState([]);
+  const [selectedContacts, setSelectedContacts] = useState([]);
   const [channelName, setChannelName] = useState("");
 
   useEffect(() => {
@@ -47,7 +43,32 @@ const CreateChannel = () => {
     getData();
   }, []);
 
-  const createChannel = async () => {};
+  const createChannel = async () => {
+    try {
+      if (channelName.length > 0 && selectedContacts.length > 0) {
+        console.log('seleted lcsdf', selectedContacts);
+        
+        const res = await apiClient.post(
+          CREATE_CHANNEL_ROUTE,
+          {
+            name: channelName,
+            members: selectedContacts.map((contact) => contact.value ),
+          },
+          { withCredentials: true }
+        );
+        console.log('res : ',res);
+        
+        if (res.status === 201) {
+            setChannelName('')
+            setSelectedContacts([])
+            setNewChannelModel(false)
+            addChannel(res.data.channel)
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -85,8 +106,8 @@ const CreateChannel = () => {
               className="rounded-lg bg-[#2c2e3b] border-none py-2 text-white"
               defaultOptions={allContacts}
               placeholder="Search Contacts"
-              value={selectedContact}
-              onChange={setSearchedContacts}
+              value={selectedContacts}
+              onChange={setSelectedContacts}
               emptyIndicator={
                 <p className="text-center text-lg leading-10 text-gray-600 ">
                   No Results found.
