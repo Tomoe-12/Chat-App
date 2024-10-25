@@ -5,6 +5,7 @@ import { apiClient } from "@/lib/api-client";
 import { GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
 import { useAppStore } from "@/store";
 import ContactList from "@/components/contact-list";
+import CreateChannel from "./components/create-channel";
 
 const ContactContainer = () => {
   const { setDirectMessageContacts, directMessageContacts } = useAppStore();
@@ -16,7 +17,6 @@ const ContactContainer = () => {
       });
 
       if (res.data.contacts) {
-        console.log("all contacts ", res);
         setDirectMessageContacts(res.data.contacts);
       }
     };
@@ -40,6 +40,7 @@ const ContactContainer = () => {
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Channels" />
+          <CreateChannel/>
         </div>
       </div>
       <ProfileInfo />
