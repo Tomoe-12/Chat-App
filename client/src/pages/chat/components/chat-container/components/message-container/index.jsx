@@ -288,6 +288,66 @@ const MessageContainer = () => {
             {message.content}
           </div>
         )}
+         {message.messageType === "file" && (
+        <div
+          className={` ${
+            message.sender !== selectedChatData._id
+              ? ` ${getColor(
+                  userInfo.color
+                )} text-white rounded-3xl rounded-br-none`
+              : " bg-[#2a2b33]/5 text-white border-[#ffffff]/20 rounded-3xl rounded-bl-none"
+          } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
+        >
+          {checkIfImage(message.fileURL) ? (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setShowImage(true);
+                setImageURL(message.fileURL);
+              }}
+            >
+              <img
+                src={message.fileURL}
+                className={` ${
+                  message.sender !== selectedChatData._id
+                    ? "rounded-br-none"
+                    : "rounded-bl-none"
+                } rounded-3xl`}
+                height={300}
+                width={300}
+                alt=""
+              />
+            </div>
+          ) : (
+            <div
+              className="flex items-center justify-center gap-4"
+              id="file-name-container"
+            >
+              <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
+                <MdFolderZip />
+              </span>
+              {/* Truncate file name based on container width */}
+              <span className="text-sm">
+                {truncateFileName(
+                  getFileNameFromUrl(message.fileURL),
+                  containerWidth
+                )}
+              </span>
+              <span
+                className="bg-black/20 p-3 text-2xl rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
+                onClick={() =>
+                  downloadFile(
+                    message.fileURL,
+                    getFileNameFromUrl(message.fileURL)
+                  )
+                }
+              >
+                <IoMdArrowRoundDown />
+              </span>
+            </div>
+          )}
+        </div>
+      )}
         {message.sender._id !== userInfo.id ? (
           <div className="flex items-center justify-start rounded-full gap-3">
             <Avatar className="h-8 w-8 rounded-full overflow-hidden">
