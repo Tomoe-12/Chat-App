@@ -12,7 +12,6 @@ const ContactList = ({ contacts, isChannel = false }) => {
     userInfo,
     setSelectedChatMessage,
   } = useAppStore();
-  
 
   const handleClick = (contact) => {
     if (isChannel) setSelectedChatType("channel");
@@ -30,7 +29,7 @@ const ContactList = ({ contacts, isChannel = false }) => {
           key={i}
           className={` pl-10 py-2 transition-all duration-300 cursor-pointer ${
             selectedChatData && selectedChatData._id === contact._id
-              ? `${getColor(userInfo.color)} `   
+              ? `${getColor(userInfo.color)} `
               : "hover:bg-[#f1f1f111]"
           } `}
           onClick={() => handleClick(contact)}
@@ -63,12 +62,19 @@ const ContactList = ({ contacts, isChannel = false }) => {
               </Avatar>
             )}
             {isChannel && (
-              <div className=" bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full ">#</div>
+              <div className=" bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full ">
+                #
+              </div>
             )}
             {isChannel ? (
               <span>{contact.name}</span>
             ) : (
-              <span> {`${contact.firstName} ${contact.lastName} `} </span>
+              <span>
+                {" "}
+                {contact.firstName
+                  ? `${contact.firstName} ${contact.lastName} `
+                  : contact.email}{" "}
+              </span>
             )}
           </div>
         </div>
