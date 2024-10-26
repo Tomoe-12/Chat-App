@@ -9,6 +9,7 @@ import { IoMdArrowRoundDown } from "react-icons/io";
 import { getColor } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -102,6 +103,7 @@ const MessageContainer = () => {
             </div>
           )}
           {selectedChatType === "contact" && renderedMessages(message)}
+          {selectedChatType === "channel" && renderedChannelMessages(message)}
         </div>
       );
     });
@@ -130,23 +132,22 @@ const MessageContainer = () => {
     return imageMimeTypes.includes(fileType);
   };
 
-
   const downloadFile = async (url, customFileName) => {
     setIsDownloading(true);
     setFileDownloadprogress(0);
-  
+
     // Extract fileSize from the URL
     const urlParams = new URL(url);
     const fileSize = urlParams.searchParams.get("fileSize");
     const totalFileSize = fileSize ? parseInt(fileSize, 10) : null;
-  
+
     try {
       const res = await apiClient.get(`${url}`, {
         responseType: "blob",
         onDownloadProgress: (progressEvent) => {
           const { loaded } = progressEvent;
           console.log("Loaded:", loaded);
-  
+
           if (totalFileSize) {
             // Use the extracted file size to calculate progress
             const percentCompleted = Math.round((100 * loaded) / totalFileSize);
@@ -159,7 +160,7 @@ const MessageContainer = () => {
           }
         },
       });
-  
+
       const urlBlob = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = urlBlob;
@@ -175,7 +176,6 @@ const MessageContainer = () => {
       setIsDownloading(false);
     }
   };
-  
 
   const getFileNameFromUrl = (fileURL) => {
     // Extract the 'fileName' parameter from the URL
@@ -265,6 +265,64 @@ const MessageContainer = () => {
       )}
     </div>
   );
+
+  const renderedChannelMessages = (message) => {
+    console.log("endfd", message);
+
+    return (
+      <div
+        className={`mt-5  ${
+          message.sender._id !== userInfo.id ? "text-left " : "text-right"
+        } `}
+      >
+        {message.messageType === "text" && (
+          <div
+            className={` ${
+              message.sender._id === userInfo.id
+                ? ` ${getColor(
+                    userInfo.color
+                  )} text-white rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
+                : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
+            } border inline-block p-4 rounded my-1 max-w-[70%] break-words ml-9 `}
+          >
+            {message.content}
+          </div>
+        )}
+        {message.sender._id !== userInfo.id ? (
+          <div className="flex items-center justify-start rounded-full gap-3">
+            <Avatar className="h-8 w-8 rounded-full overflow-hidden">
+              {message.sender.image && (
+                <AvatarImage
+                  src={message.sender.image}
+                  alt="profile"
+                  className="object-cover h-full bg-black"
+                />
+              )}
+              <AvatarFallback
+                className={`uppercase h-8 w-8  text-lg flex items-center justify-center rounded-full ${getColor(
+                  message.sender.color
+                )}`}
+              >
+                {message.sender.firstName
+                  ? message.sender.firstName.split("").shift()
+                  : message.sender.email}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm text-white/60">{`${message.sender.firstName} ${message.sender.lastName}`}</span>
+            <span className="text-xs text-white/60  ">
+              {moment(message.timestamp).format("LT")}
+            </span>
+          </div>
+        ) : (
+          <>
+            <div className="text-xs mt-1 text-white/60  ">
+              {moment(message.timestamp).format("LT")}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="flex-1 overflow-auto scrollbar-hidden p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full ">

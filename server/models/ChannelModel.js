@@ -9,7 +9,7 @@ const channelSchema = new mongoose.Schema({
         { type: mongoose.Schema.ObjectId, ref: "Users", required: true },
     ],
     admin: { type: mongoose.Schema.ObjectId, ref: 'Users', required: true },
-    messaages: [{ type: mongoose.Schema.ObjectId, ref: "Messages", required: false }],
+    messages: [{ type: mongoose.Schema.ObjectId, ref: "Messages", required: false }],
     createdAt: {
         type: Date,
         default: Date.now(),

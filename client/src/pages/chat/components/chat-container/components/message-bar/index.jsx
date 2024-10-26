@@ -49,7 +49,16 @@ const MessageBar = () => {
         messageType: "text",
         fileURL: undefined,
       });
+    } else if (selectedChatType === "channel") {
+      socket.emit("send-channel-message", {
+        sender: userInfo.id,
+        content: message,
+        messageType: "text",
+        fileURL: undefined,
+        channelId: selectedChatData._id,
+      });
     }
+    setMessage('')
   };
 
   const handleAttachmentClick = () => {
@@ -71,7 +80,6 @@ const MessageBar = () => {
             setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
           },
         });
-        console.log("res : from image :::  ", res);
 
         if (res.status === 200 && res.data) {
           setIsUploading(false);
@@ -82,6 +90,14 @@ const MessageBar = () => {
               recipient: selectedChatData._id,
               messageType: "file",
               fileURL: res.data.fileURL,
+            });
+          } else if (selectedChatType === "channel") {
+            socket.emit("send-channel-message", {
+              sender: userInfo.id,
+              content: undefined,
+              messageType: "file",
+              fileURL: res.data.fileURL,
+              channelId: selectedChatData._id,
             });
           }
         }
