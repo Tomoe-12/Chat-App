@@ -11,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { useAppStore } from "@/store";
 
 const Auth = () => {
-  const navigate = useNavigate()
-  const { setUserInfo } = useAppStore()
+  const navigate = useNavigate();
+  const { setUserInfo } = useAppStore();
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  const [loginemail, setloginemail] = useState('')
-  const [loginpass, setloginpass] = useState('')
+  const [loginemail, setloginemail] = useState("");
+  const [loginpass, setloginpass] = useState("");
   const [confirmPass, setconfirmPass] = useState("");
 
   const validateLogin = () => {
@@ -29,7 +29,7 @@ const Auth = () => {
       return false;
     }
     return true;
-  }
+  };
 
   const validateSignUp = () => {
     if (!email.length) {
@@ -49,36 +49,45 @@ const Auth = () => {
 
   const handleLogin = async () => {
     if (validateLogin()) {
-      const res = await apiClient.post(
-        LOGIN_ROUTE,
-        { email: loginemail, password: loginpass },
-        { withCredentials: true }
-      )
-      if (res.data.user.id) {
-        setUserInfo(res.data.user)
-        if (res.data.user.profileSetup) {
-          navigate('/chat')
-        } else {
-          navigate('/profile')
+      try {
+        const res = await apiClient.post(
+          LOGIN_ROUTE,
+          { email: loginemail, password: loginpass },
+          { withCredentials: true }
+        );
+        if (res.data.user.id) {
+          setUserInfo(res.data.user);
+          if (res.data.user.profileSetup) {
+            navigate("/chat");
+          } else {
+            navigate("/profile");
+          }
         }
+        console.log(res);
+      } catch (error) {
+        toast.error(error.response.data);
       }
-      console.log(res);
     }
   };
 
   const handlesSignup = async () => {
     if (validateSignUp()) {
-      console.log(email, password);
-      const res = await apiClient.post(
-        SIGNUP_ROUTE,
-        { email, password },
-        { withCredentials: true }
-      );
-      if (res.status == 200) {
-        setUserInfo(res.data.user)
-        navigate('/profile')
+      try {
+        const res = await apiClient.post(
+          SIGNUP_ROUTE,
+          { email, password },
+          { withCredentials: true }
+        );
+        if (res.status == 404) {
+          toast.error(res.data);
+        } else if (res.status == 200) {
+          setUserInfo(res.data.user);
+          navigate("/profile");
+        }
+        console.log(res);
+      } catch (error) {
+        toast.error(error.response.data);
       }
-      console.log(res);
     }
   };
 

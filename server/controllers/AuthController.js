@@ -16,7 +16,7 @@ export const signup = async (req, res, next) => {
 
     try {
         const { email, password } = req.body
-        if (!email || !password) return res.status(400).send('emial and password is required')
+        if (!email || !password) return res.status(400).send('email and password is required')
         const user = await User.create({ email, password })
         res.cookie('jwt', createToken(email, user.id), {
             maxAge,
@@ -47,7 +47,7 @@ export const login = async (req, res, next) => {
         console.log('user', user);
 
         if (!user) {
-            return res.status(404).send('user with the given email not found !')
+            return res.status(404).json('user with the given email not found !')
         }
         const auth = await compare(password, user.password)
         if (!auth) {
