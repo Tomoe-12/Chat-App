@@ -2,6 +2,7 @@
 import { useAppStore } from "@/store";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { getColor } from "@/lib/utils";
+import { SidebarMenuItem } from "./ui/sidebar";
 
 const ContactList = ({ contacts, isChannel = false }) => {
   const {
@@ -25,9 +26,9 @@ const ContactList = ({ contacts, isChannel = false }) => {
   return (
     <div className="mt-5  ">
       {contacts.map((contact, i) => (
-        <div
+        <SidebarMenuItem
           key={i}
-          className={` pl-10 py-2 transition-all duration-300 cursor-pointer ${
+          className={`pl-5 py-2 transition-all duration-300 cursor-pointer ${
             selectedChatData && selectedChatData._id === contact._id
               ? `${getColor(userInfo.color)} `
               : "hover:bg-[#f1f1f111]"
@@ -77,7 +78,7 @@ const ContactList = ({ contacts, isChannel = false }) => {
               </span>
             )}
           </div>
-        </div>
+        </SidebarMenuItem>
       ))}
     </div>
   );

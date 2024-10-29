@@ -9,6 +9,12 @@ import {
 import { useAppStore } from "@/store";
 import ContactList from "@/components/contact-list";
 import CreateChannel from "./components/create-channel";
+import {
+  Sidebar,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 const ContactContainer = () => {
   const {
@@ -40,34 +46,64 @@ const ContactContainer = () => {
     };
 
     getContacts();
-    getChannels()
-  }, [setChannels,setDirectMessageContacts]);
+    getChannels();
+  }, [setChannels, setDirectMessageContacts]);
+
+  //   return (
+  //     <div className="relative md:w-[35vw] lg:w-[33vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b]  w-full ">
+  //       <div className="pt-3">
+  //         <Logo />
+  //       </div>
+  //       <div className="my-5">
+  //         <div className="flex items-center justify-between pr-10">
+  //           <Title text="Direct Messages" />
+  //           <NewDM />
+  //         </div>
+  //         <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
+  //           <ContactList contacts={directMessageContacts} />
+  //         </div>
+  //       </div>
+  //       <div className="my-5">
+  //         <div className="flex items-center justify-between pr-10">
+  //           <Title text="Channels" />
+  //           <CreateChannel />
+  //         </div>
+  //         <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
+  //           <ContactList contacts={channels} isChannel={true} />
+  //         </div>
+  //       </div>
+  //       <ProfileInfo />
+  //     </div>
+  //   );
+  // };
 
   return (
-    <div className="relative md:w-[35vw] lg:w-[33vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b]  w-full ">
-      <div className="pt-3">
+    <Sidebar className="border-r-2 border-[#2f303b] text-white min-h-screen">
+      <SidebarHeader>
         <Logo />
-      </div>
+      </SidebarHeader>
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Direct Messages" />
           <NewDM />
         </div>
-        <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
+        <SidebarMenuItem className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
           <ContactList contacts={directMessageContacts} />
-        </div>
+        </SidebarMenuItem>
       </div>
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Channels" />
           <CreateChannel />
         </div>
-        <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
+        <SidebarMenuItem className="max-h-[38vh] overflow-y-auto scrollbar-hidden">
           <ContactList contacts={channels} isChannel={true} />
-        </div>
+        </SidebarMenuItem>
       </div>
-      <ProfileInfo />
-    </div>
+      <SidebarFooter>
+        <ProfileInfo />
+      </SidebarFooter>
+    </Sidebar>
   );
 };
 
@@ -101,7 +137,7 @@ const Logo = () => {
           fill="#4CAF50" // Green
         ></path>{" "}
       </svg>
-      <span className="text-3xl font-semibold ">ThiThiSpeak</span>
+      <span className="text-3xl font-semibold ">THISPEAK</span>
     </div>
   );
 };

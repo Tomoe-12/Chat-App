@@ -3,10 +3,10 @@ import { getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
 import { RiCloseFill } from "react-icons/ri";
 
-const ChatHeader = () => {
+ const ChatHeader = () => {
   const { closeChat, selectedChatData, selectedChatType } = useAppStore();
   return (
-    <div className="h-[10vh] border-b-2 border-[#2f303b] flex items-center justify-between px-20  ">
+    <div className="md:min-h-[8vh] min-h-[20vh] border-b-2 border-[#2f303b] flex items-center justify-between md:px-20 px-5  ">
       <div className="flex gap-5 items-center justify-between w-full  ">
         <div className="flex gap-3 items-center justify-center ">
           <div className="w-12 h-12 relative">
@@ -54,5 +54,4 @@ const ChatHeader = () => {
     </div>
   );
 };
-
-export default ChatHeader;
+export default ChatHeader
