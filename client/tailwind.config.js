@@ -7,20 +7,20 @@ export default {
   ],
   theme: {
   	extend: {
-		fontFamily : {
-			lato : ['Lato','sans-serif']
-		},
+  		fontFamily: {
+  			lato: ['Lato','sans-serif']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-			primaryColor: '#1DA1F2',      // Soft Blue for primary elements
-			accentColor: '#4CAF50',       // Green for accents like notifications
-			backgroundColor: '#F5F5F5',   // Light gray for the background
-			textColor: '#333333',         // Dark charcoal for text
-			secondaryColor: '#9B59B6',    // Muted purple for secondary elements	
+  			primaryColor: '#1DA1F2',
+  			accentColor: '#4CAF50',
+  			backgroundColor: '#F5F5F5',
+  			textColor: '#333333',
+  			secondaryColor: '#9B59B6',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -60,6 +60,16 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
   			}
   		}
   	}

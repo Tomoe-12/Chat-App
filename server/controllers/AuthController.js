@@ -51,7 +51,7 @@ export const login = async (req, res, next) => {
         }
         const auth = await compare(password, user.password)
         if (!auth) {
-            return res.status(400).send('password is incorrect !')
+            return res.status(400).send('Please provide valid credientials')
         }
 
         res.cookie('jwt', createToken(email, user.id), {
