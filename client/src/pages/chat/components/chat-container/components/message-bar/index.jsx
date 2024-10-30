@@ -65,7 +65,7 @@ const MessageBar = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  };
+  }
 
   const handleAttachmentChange = async (e) => {
     try {

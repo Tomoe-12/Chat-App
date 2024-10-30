@@ -1,12 +1,16 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
 import { RiCloseFill } from "react-icons/ri";
+import { useMediaQuery } from "react-responsive";
 
- const ChatHeader = () => {
+const ChatHeader = () => {
+  const isLgOrLarger = useMediaQuery({ minWidth: 1024 });
   const { closeChat, selectedChatData, selectedChatType } = useAppStore();
   return (
-    <div className="md:min-h-[8vh] min-h-[20vh] border-b-2 border-[#2f303b] flex items-center justify-between md:px-20 px-5  ">
+    <div className={`md:min-h-[8vh] min-h-[20vh] border-b-2 border-[#2f303b] flex items-center ${!isLgOrLarger ? 'pl-5 pr-10' : 'px-16'} `}>
+      {!isLgOrLarger && <SidebarTrigger className="mr-5" />}
       <div className="flex gap-5 items-center justify-between w-full  ">
         <div className="flex gap-3 items-center justify-center ">
           <div className="w-12 h-12 relative">
@@ -54,4 +58,4 @@ import { RiCloseFill } from "react-icons/ri";
     </div>
   );
 };
-export default ChatHeader
+export default ChatHeader;

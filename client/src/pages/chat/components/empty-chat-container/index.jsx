@@ -1,5 +1,4 @@
 import AnimationContainer from "@/components/AnimationContainer";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import EmptyHeader from "./components/empty-header";
 import { useMediaQuery } from "react-responsive";
 
