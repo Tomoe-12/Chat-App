@@ -28,38 +28,36 @@ const Chat = () => {
   }, [userInfo, navigate]);
 
   return (
-    <SidebarProvider>
-      <div className="flex h-[100vh] w-[100vw] text-white overflow-hidden">
-     
+      <SidebarProvider>
+        <div className="flex h-[100vh] w-[100vw] text-white overflow-hidden">
         {isUploading && (
-          <div className="h-[100vh] w-[100vw] fixed top-0 z-10 left-0 bg-black/80 flex items-center justify-center flex-col gap-5 backdrop-blur-lg ">
-            <AnimationContainer
-              animationType="uploading"
-              width={500}
-              height={500}
-            />
-            {fileUploadProgress}%
-          </div>
-        )}
-        {isDownloading && (
-          <div className="h-[100vh] w-[100vw] fixed top-0 z-10 left-0 bg-black/80 flex items-center justify-center flex-col gap-5 backdrop-blur-lg ">
-            <AnimationContainer
-              animationType="downloading"
-              width={500}
-              height={500}
-            />
-            {fileDownloadprogress}%
-          </div>
-        )}
-
-        <ContactContainer />
-        {selectedChatType === undefined ? (
-          <EmptyChatContainer />
-        ) : (
-          <ChatContainer />
-        )}
-      </div>
-    </SidebarProvider>
+        <div className="h-[100vh] w-[100vw] fixed top-0 z-50 left-0 bg-black/80 flex items-center justify-center flex-col gap-5 backdrop-blur-lg ">
+          <AnimationContainer
+            animationType="uploading"
+            width={500}
+            height={500}
+          />
+          {fileUploadProgress}%
+        </div>
+      )}
+      {isDownloading && (
+        <div className="h-[100vh] w-[100vw] fixed top-0 z-50 left-0 bg-black/80 flex items-center justify-center flex-col gap-5 backdrop-blur-lg ">
+          <AnimationContainer
+            animationType="downloading"
+            width={500}
+            height={500}
+          />
+          {fileDownloadprogress}%
+        </div>
+      )}
+          <ContactContainer />
+          {selectedChatType === undefined ? (
+            <EmptyChatContainer />
+          ) : (
+            <ChatContainer />
+          )}
+        </div>
+      </SidebarProvider>
   );
 };
 

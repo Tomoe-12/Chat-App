@@ -10,6 +10,7 @@ import { getColor } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -400,7 +401,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex-1 overflow-auto scrollbar-hidden p-4 px-8  w-full ">
+    <ScrollArea className="flex-1 overflow-auto scrollbar-hidden px-4 md:px-8 pb-4  w-full ">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
@@ -427,7 +428,7 @@ const MessageContainer = () => {
           </div>
         </div>
       )}
-    </div>
+    </ScrollArea>
   );
 };
 
