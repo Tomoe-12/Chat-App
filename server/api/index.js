@@ -3,11 +3,11 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
-import authRoutes from './routes/AuthRoutes.js'
-import contactsRoutes from './routes/ContactRoutes.js'
-import setupSocket from './routes/socket.js'
-import messagesRoutes from './routes/messagesRoute.js'
-import ChannelRoutes from './routes/ChannelRoute.js'
+import authRoutes from '../routes/AuthRoutes.js'
+import contactsRoutes from '../routes/ContactRoutes.js'
+import setupSocket from '../routes/socket.js'
+import messagesRoutes from '../routes/messagesRoute.js'
+import ChannelRoutes from '../routes/ChannelRoute.js'
 
 dotenv.config()
 
