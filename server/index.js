@@ -27,6 +27,9 @@ app.use('/upload/files',express.static('upload/files'))
 app.use(cookieParser())
 app.use(express.json())
 
+app.get('/', (req, res) => {
+    res.send('server is running')
+})
 app.use('/api/auth', authRoutes)
 app.use('/api/contacts',contactsRoutes)
 app.use('/api/messages',messagesRoutes)
