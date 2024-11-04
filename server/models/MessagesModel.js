@@ -1,4 +1,3 @@
-import { timestamp } from "drizzle-orm/mysql-core";
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
