@@ -28,7 +28,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.send('server is running at ',port)
+    res.send('server is running at')
 })
 app.use('/api/auth', authRoutes)
 app.use('/api/contacts',contactsRoutes)
