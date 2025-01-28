@@ -15,10 +15,17 @@ const app = express()
 const port = process.env.PORT || 3001;
 const dbUrl = process.env.DATABASE_URL || 'mongodb://localhost:27017/'
 
+const allowedOrigins = ['https://chat-app-three-beryl.vercel.app'];
 
 
 app.use(cors({
-    origin: "https://chat-app-three-beryl.vercel.app",
+    origin: function(origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
     methods: ["GET", "POST", 'PUT', 'DELETE'],
     credentials: true,
 }))
