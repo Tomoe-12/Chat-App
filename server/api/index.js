@@ -18,7 +18,7 @@ const dbUrl = process.env.DATABASE_URL || 'mongodb://localhost:27017/'
 
 
 app.use(cors({
-    origin: [process.env.ORIGIN],
+    origin: "https://chat-app-three-beryl.vercel.app",
     methods: ["GET", "POST", 'PUT', 'DELETE'],
     credentials: true,
 }))
