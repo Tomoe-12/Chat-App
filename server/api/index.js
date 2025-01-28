@@ -15,17 +15,13 @@ const app = express()
 const port = process.env.PORT || 3001;
 const dbUrl = process.env.DATABASE_URL || 'mongodb://localhost:27017/'
 
-app.use(cors({
-    origin: process.env.ORIGIN ? process.env.ORIGIN.split(',') : '*', // Handle multiple or single origins
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-}));
 
-// app.use(cors({
-//     origin: [process.env.ORIGIN],
-//     methods: ["GET", "POST", 'PUT', 'DELETE'],
-//     credentials: true,
-// }))
+
+app.use(cors({
+    origin: [process.env.ORIGIN],
+    methods: ["GET", "POST", 'PUT', 'DELETE'],
+    credentials: true,
+}))
 
 app.use('/upload/profile', express.static('upload/profile'))
 app.use('/upload/files',express.static('upload/files'))
