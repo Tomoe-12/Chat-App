@@ -20,28 +20,62 @@ const Auth = () => {
   const [confirmPass, setconfirmPass] = useState("");
 
   const validateLogin = () => {
-    if (!loginemail.length) {
-      toast.error("Email is required!");
+    if (!loginemail.length || !loginpass.length) {
+      toast.error("Email and Password is required!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
+      return false;
+    }
+    if (!email.includes("@")) {
+      toast.error("Invalid email!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
       return false;
     }
     if (!loginpass.length) {
-      toast.error("Password is required!");
+      toast.error("Password is required!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
+      return false;
+    }
+    if(!password.length<6){
+      toast.error("Password should be at least 6 characters", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
       return false;
     }
     return true;
   };
 
   const validateSignUp = () => {
-    if (!email.length) {
-      toast.error("Email is required!");
+    if (!email.length || !password.length || !confirmPass.length) {
+      toast.error("Email and Password is required!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
+      return false;
+    }
+    if (!email.includes("@")) {
+      toast.error("Invalid email!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
       return false;
     }
     if (!password.length) {
-      toast.error("Password is required!");
+      toast.error("Password is required!", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
       return false;
     }
     if (password !== confirmPass) {
-      toast.error("Password and confirm password do not match ");
+      toast.error("Password and confirm password do not match ", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
+      return false;
+    }
+    if(!password.length<6 || !confirmPass.length>6){
+      toast.error("Password should be at least 6 characters", {
+        style: { border: "1px solid red", borderColor: "red", color: "red"},
+      });
       return false;
     }
     return true;
@@ -97,12 +131,12 @@ const Auth = () => {
         <div className="flex flex-col gap-10 items-center justify-center">
           <div className="flex items-center justify-center flex-col">
             <div className="flex items-center justify-center ">
-              <h1 className="text-5xl text-textColor font-bold md:text-6xl ">
+              <h1 className="md:text-5xl text-4xl text-textColor font-bold lg:text-6xl ">
                 Welcome
               </h1>
               <img src={victory} alt="victory emoji" className="h-[70px]" />
             </div>
-            <p className="font-medium text-center">
+            <p className="font-medium text-center lg:text-lg md:text-base text-xs">
               Fill in details to get started with the best chat app!
             </p>
           </div>
@@ -124,6 +158,8 @@ const Auth = () => {
                   SignUp
                 </TabsTrigger>
               </TabsList>
+
+              {/* login */}
               <TabsContent className="flex flex-col gap-5 mt-10" value="login">
                 <Input
                   placeholder="Email"
@@ -133,6 +169,7 @@ const Auth = () => {
                 />
                 <Input
                   placeholder="Password"
+                  type='password'
                   className="rounded-full p-6"
                   value={loginpass}
                   onChange={(e) => setloginpass(e.target.value)}
@@ -142,6 +179,8 @@ const Auth = () => {
                   Login
                 </Button>
               </TabsContent>
+
+              {/* signUP */}
               <TabsContent className="flex flex-col gap-5" value="signup">
                 <Input
                   placeholder="Email"
@@ -152,12 +191,14 @@ const Auth = () => {
                 <Input
                   placeholder="Password"
                   className="rounded-full p-6"
+                   type='password'
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
                 />
                 <Input
                   placeholder="Confirm Password"
                   className="rounded-full p-6"
+                   type='password'
                   value={confirmPass}
                   onChange={(e) => setconfirmPass(e.target.value)}
                 />
