@@ -42,11 +42,15 @@ const Profile = () => {
   const validateProfile = () => {
     let valid = true;
     if (!firstName) {
-      toast.error("First Name is required!");
+      toast.error("First Name is required!", {
+        style: { border: "1px solid red", color: "red" },
+      });
       valid = false;
     }
     if (!lastName) {
-      toast.error("Last Name is required!");
+      toast.error("Last Name is required!", {
+        style: { border: "1px solid red", color: "red" },
+      });
       valid = false;
     }
     return valid;
@@ -62,7 +66,9 @@ const Profile = () => {
         );
         if (res.status === 200 && res.data) {
           setUserInfo({ ...res.data });
-          toast.success("Profile Updated successfully ! ");
+          toast.success("Profile Updated successfully !", {
+            style: { border: "1px solid green", color: "green" },
+          });
           navigate("/chat");
         }
       } catch (error) {
@@ -75,7 +81,12 @@ const Profile = () => {
     if (userInfo.profileSetup) {
       navigate("/chat");
     } else {
-      toast.error("Please setup Profile");
+      toast.error("Please setup Profile", {
+        style: {
+          border: "1px solid red",
+          color: "red",
+        },
+      });
     }
   };
 
@@ -94,7 +105,9 @@ const Profile = () => {
         });
         if (res.status === 200 && res.data.image) {
           setUserInfo({ ...userInfo, image: res.data.image });
-          toast.success("Image updated successfully");
+          toast.success("Image updated successfully", {
+            style: { border: "1px solid green", color: "green" },
+          });
         }
       } catch (error) {
         console.error(error);
@@ -110,33 +123,42 @@ const Profile = () => {
       });
       if (res.status === 200) {
         setUserInfo({ ...userInfo, image: null });
-        toast("image remove successfully ");
+        toast("image remove successfully", {
+          style: { border: "1px solid green", color: "green" },
+        });
         setImage(null);
       }
     } catch (error) {
       console.log(error);
-      toast.error("Error removing image");
+      toast.error("Error removing image", {
+        style: { border: "1px solid red", color: "red" },
+      });
     }
   };
 
   return (
-    <div className="bg-[#1b1c24] h-[100vh] flex items-center justify-center flex-col gap-10">
+    // <div className="bg-[#1b1c24] h-[100vh] flex items-center justify-center flex-col gap-10">
+    <div className="bg-white h-[100vh] flex items-center justify-center flex-col gap-10">
       <div className="flex flex-col gap-10 w-[80vw] md:w-max ">
+        {/* back arrow */}
         <div onClick={handleNavigate}>
-          <IoArrowBack className="text-4xl lg:text-6xl text-white/90 cursor-pointer " />
+          <IoArrowBack className="text-4xl lg:text-5xl text-black cursor-pointer " />
         </div>
         <div className="grid grid-cols-2">
+
+          {/* avatar */}
           <div
             className="h-full w-32 md:w-48 md:h-48 relative flex items-center justify-center"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
+          
             <Avatar className="h-32 w-32 md:w-48 md:h-48 rounded-full overflow-hidden">
               {image ? (
                 <AvatarImage
                   src={image}
                   alt="profile"
-                  className="object-cover h-full bg-black"
+                  className="object-cover h-full bg-white"
                 />
               ) : (
                 <div
@@ -171,14 +193,17 @@ const Profile = () => {
               accept=".png , .jpg ,  .jpeg ,  .svg , .webp"
             />
           </div>
-          <div className="flex min-w-32 md:min-w-64 text-white gap-5 flex-col items-center justify-center">
+
+          {/* input box */}
+          <div className="flex min-w-32 md:min-w-64 text-black gap-5 flex-col items-center justify-center">
             <div className="w-full">
               <Input
                 placeholder="Email"
                 type="email"
                 disabled
                 value={userInfo.email}
-                className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                // className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                className="rounded-lg border border-gray-400 "
               />
             </div>
             <div className="w-full">
@@ -187,7 +212,8 @@ const Profile = () => {
                 type="text"
                 onChange={(e) => setFirstName(e.target.value)}
                 value={firstName}
-                className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                // className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                className={`rounded-lg border border-gray-400 text-black `}
               />
             </div>
             <div className="w-full">
@@ -196,7 +222,8 @@ const Profile = () => {
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                // className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+                className={`rounded-lg border border-gray-400 focus:border-none text-black `}
               />
             </div>
             <div className="w-full flex gap-5 ">
@@ -218,7 +245,7 @@ const Profile = () => {
         </div>
         <div className="w-full">
           <Button
-            className={`h-16 w-full bg-primaryColor transition-all duration-200  ${getColor(
+            className={`h-16 w-full bg-${getColor(selectedColor)} hover:bg-${getColor(selectedColor)}/20 transition-all duration-200  ${getColor(
               selectedColor
             )}`}
             onClick={saveChanges}
