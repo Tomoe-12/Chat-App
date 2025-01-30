@@ -112,7 +112,7 @@ const MessageBar = () => {
     // <div className="h-[8vh] bg-[#1c1d25] flex justify-center items-center md:px-8 px-4 mb-3 gap-6 ">
     <div className="h-[8vh] bg-white flex justify-center items-center md:px-8 px-4 mb-3 gap-6 ">
       {/* <div className="flex-1 flex bg-[#2a2b33] rounded-md justify-center items-center gap-5 pr-5  "> */}
-      <div className="flex-1 flex text-black border border-gray-800  bg-white rounded-md justify-center items-center gap-5 pr-5  ">
+      <div className="flex-1 flex text-black border border-gray-400  bg-white rounded-md justify-center items-center gap-5 pr-5  ">
         <input
           type="text"
           className="flex-1 p-4 md:p-5 w-fit bg-transparent rounded-md focus:border-none focus:outline-none  "

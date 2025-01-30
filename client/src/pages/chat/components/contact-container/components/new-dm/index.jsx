@@ -74,7 +74,7 @@ const NewDM = () => {
       </TooltipProvider>
       <Dialog open={openNewContactModal} onOpenChange={setOpenNewContactModal}>
         {/* <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col  "> */}
-        <DialogContent className="bg-white border-none text-gray-800 w-[400px] h-[400px] flex flex-col  ">
+        <DialogContent className="bg-white border-none text-gray-600 w-[400px] h-[400px] flex flex-col  ">
           <DialogHeader>
             <DialogTitle>Please select a contact </DialogTitle>
             <DialogDescription></DialogDescription>
@@ -135,7 +135,7 @@ const NewDM = () => {
             !isSearching && ( // Only show Lottie when not searching
               <div className="flex-1 flex flex-col justify-center items-center duration-1000 transition-all">
                <AnimationContainer animationType='contact' width={220} height={220} />
-                <div className="text-opacity-80 text-gray-800 flex flex-col gap-5 items-center lg:text-2xl text-xl transition-all duration-300 text-center">
+                <div className="text-opacity-80 text-gray-600 flex flex-col gap-5 items-center lg:text-2xl text-xl transition-all duration-300 text-center">
                   <h3 className="font-lato">
                     Hi<span className="text-primaryColor">! </span>Search New{" "}
                     <span className="text-primaryColor">Contact . </span>

@@ -36,7 +36,7 @@ const ContactList = ({ contacts, isChannel = false }) => {
           onClick={() => handleClick(contact)}
         >
           {/* <div className="flex gap-5 items-center justify-start text-neutral-300 "> */}
-          <div className="flex gap-5 items-center justify-start text-gray-800 ">
+          <div className="flex gap-5 items-center justify-start text-gray-600 ">
             {!isChannel && (
               <Avatar className="h-10 w-10 rounded-full overflow-hidden">
                 {contact.image ? (

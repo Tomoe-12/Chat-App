@@ -51,7 +51,7 @@ const ContactContainer = () => {
 
 
   return (
-    <Sidebar className="border-r-2 border-[#2f303b] text-white min-h-screen">
+    <Sidebar className="border-r-2 border-gray-400 text-white min-h-screen">
       <SidebarHeader>
         <Logo />
       </SidebarHeader>
@@ -110,14 +110,14 @@ const Logo = () => {
           fill="#4CAF50" // Green
         ></path>{" "}
       </svg>
-      <span className="text-3xl font-semibold text-gray-800 ">THISPEAK</span>
+      <span className="text-3xl font-semibold text-gray-600 ">THISPEAK</span>
     </div>
   );
 };
 const Title = ({ text }) => {
   return (
     // <h6 className="uppercase tracking-widest text-neutral-400 pl-10 font-light text-opacity-90 text-sm">
-    <h6 className="uppercase tracking-widest text-gray-800 pl-10 font-light text-opacity-90 text-sm">
+    <h6 className="uppercase tracking-widest text-gray-600 pl-10 font-light text-opacity-90 text-sm">
       {text}
     </h6>
   );

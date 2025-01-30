@@ -14,7 +14,7 @@ const ChatHeader = () => {
 
   return (
     <div
-      className={`h-[8vh] border-b border-[#2f303b] flex items-center bg-white ${
+      className={`h-[8vh] border-b border-gray-400 flex items-center bg-white ${
         !isLgOrLarger ? "px-5" : "px-16"
       } `}
     >
@@ -48,7 +48,7 @@ const ChatHeader = () => {
               </div>
             )}
           </div>
-          <div className="text-gray-800">
+          <div className="text-gray-600">
             {
               selectedChatType == "channel" &&
                 selectedChatData.name &&

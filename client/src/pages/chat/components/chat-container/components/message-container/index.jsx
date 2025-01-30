@@ -105,7 +105,7 @@ const MessageContainer = () => {
 
   const renderMessages = () => {
     if (!selectedChatMessage || selectedChatMessage.length === 0) {
-      return <div className="lg:text-3xl text-2xl font-medium w-full h-full text-gray-800 flex flex-col items-center justify-center">
+      return <div className="lg:text-3xl text-2xl font-medium w-full h-full text-gray-600 flex flex-col items-center justify-center">
          <AnimationContainer
             animationType="started"
             width={500}
@@ -121,7 +121,7 @@ const MessageContainer = () => {
       return (
         <div key={i}>
           {showDate && (
-            <div className="text-center my-2 text-gray-400">
+            <div className="text-center my-2 text-gray-600">
               {moment(message.timestamp).format("LL")}
             </div>
           )}
@@ -219,7 +219,7 @@ const MessageContainer = () => {
             message.sender !== selectedChatData._id
               ? ` ${getColor(
                   userInfo.color
-                )} text-gray-800 rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
+                )} text-gray-600 rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
               : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
           } border inline-block p-4 rounded my-1 max-w-[70%] break-words `}
         >
