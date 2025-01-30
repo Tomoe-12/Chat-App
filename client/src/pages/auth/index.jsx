@@ -22,25 +22,25 @@ const Auth = () => {
   const validateLogin = () => {
     if (!loginemail.length || !loginpass.length) {
       toast.error("Email and Password is required!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
-    if (!email.includes("@")) {
+    if (!loginemail.includes("@")) {
       toast.error("Invalid email!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
     if (!loginpass.length) {
       toast.error("Password is required!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
-    if(!password.length<6){
+    if (!password.length >= 6) {
       toast.error("Password should be at least 6 characters", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
@@ -50,31 +50,31 @@ const Auth = () => {
   const validateSignUp = () => {
     if (!email.length || !password.length || !confirmPass.length) {
       toast.error("Email and Password is required!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
     if (!email.includes("@")) {
       toast.error("Invalid email!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
     if (!password.length) {
       toast.error("Password is required!", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
     if (password !== confirmPass) {
       toast.error("Password and confirm password do not match ", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
-    if(!password.length<6 || !confirmPass.length>6){
+    if (!password.length >= 6 || !confirmPass.length >= 6) {
       toast.error("Password should be at least 6 characters", {
-        style: { border: "1px solid red", borderColor: "red", color: "red"},
+        style: { border: "1px solid red", borderColor: "red", color: "red" },
       });
       return false;
     }
@@ -89,17 +89,50 @@ const Auth = () => {
           { email: loginemail, password: loginpass },
           { withCredentials: true }
         );
-        if (res.data.user.id) {
-          setUserInfo(res.data.user);
-          if (res.data.user.profileSetup) {
-            navigate("/chat");
-          } else {
-            navigate("/profile");
+        console.log("res", res);
+
+        if (res.status == 200) {
+          const { user, message } = res.data;
+          if (user?.id) {
+            setUserInfo(user);
+            if (user?.profileSetup) {
+              navigate("/chat");
+            } else {
+              navigate("/profile");
+            }
           }
+          toast.success(message, {
+            style: { border: "1px solid green", color: "green" },
+          });
+          setUserInfo(user);
+          navigate("/profile");
+        } else {
+          const { message } = res.data;
+          toast.error(message, {
+            style: {
+              border: "1px solid red",
+              borderColor: "red",
+              color: "red",
+            },
+          });
         }
-        console.log(res);
+        // if (res.data.user.id) {
+        //   setUserInfo(res.data.user);
+        //   if (res.data.user.profileSetup) {
+        //     navigate("/chat");
+        //   } else {
+        //     navigate("/profile");
+        //   }
+        // }
       } catch (error) {
-        toast.error(error.response.data);
+        const { message } = error.response.data;
+        toast.error(message, {
+          style: {
+            border: "1px solid red",
+            borderColor: "red",
+            color: "red",
+          },
+        });
       }
     }
   };
@@ -112,15 +145,31 @@ const Auth = () => {
           { email, password },
           { withCredentials: true }
         );
-        if (res.status == 404) {
-          toast.error(res.data);
-        } else if (res.status == 200) {
-          setUserInfo(res.data.user);
+
+        if (res.status == 200) {
+          const { user } = res.data;
+
+          // toast.success(message, { BackgroundColor: "green", color: "green" });
+          setUserInfo(user);
           navigate("/profile");
+        } else {
+          toast.error(res.data.message, {
+            style: {
+              border: "1px solid red",
+              borderColor: "red",
+              color: "red",
+            },
+          });
         }
-        console.log(res);
       } catch (error) {
-        toast.error(error.response.data);
+        const { message } = error.response.data;
+        toast.error(message, {
+          style: {
+            border: "1px solid red",
+            borderColor: "red",
+            color: "red",
+          },
+        });
       }
     }
   };
@@ -134,7 +183,7 @@ const Auth = () => {
               <h1 className="md:text-5xl text-4xl text-textColor font-bold lg:text-6xl ">
                 Welcome
               </h1>
-              <img src={victory} alt="victory emoji" className="h-[70px]" />
+              <img src={victory} alt="victory emoji" className="h-[50px] " />
             </div>
             <p className="font-medium text-center lg:text-lg md:text-base text-xs">
               Fill in details to get started with the best chat app!
@@ -169,7 +218,7 @@ const Auth = () => {
                 />
                 <Input
                   placeholder="Password"
-                  type='password'
+                  type="password"
                   className="rounded-full p-6"
                   value={loginpass}
                   onChange={(e) => setloginpass(e.target.value)}
@@ -191,14 +240,14 @@ const Auth = () => {
                 <Input
                   placeholder="Password"
                   className="rounded-full p-6"
-                   type='password'
+                  type="password"
                   value={password}
                   onChange={(e) => setpassword(e.target.value)}
                 />
                 <Input
                   placeholder="Confirm Password"
                   className="rounded-full p-6"
-                   type='password'
+                  type="password"
                   value={confirmPass}
                   onChange={(e) => setconfirmPass(e.target.value)}
                 />

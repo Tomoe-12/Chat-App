@@ -23,17 +23,21 @@ export const signup = async (req, res, next) => {
             secure: true,
             sameSite: 'none',
         })
-        return res.status(201).json({
+        return res.status(200).json({
             user: {
                 id: user.id,
                 email: user.email,
                 profileSetup: user.profileSetup
-            }
+            },
+            message : 
+                'User created Successfully!'
+            
         })
     } catch (error) {
-        console.log({ error });
-        return res.status(500).send('inter server error')
-
+        if(error.code == 11000){
+            return res.status(500).send({message :'User with the given email already exist'})
+        }
+        return res.status(500).send({message : 'Internal server error!'})
     }
 }
 
@@ -42,16 +46,16 @@ export const login = async (req, res, next) => {
 
     try {
         const { email, password } = req.body
-        if (!email | !password) return res.status(400).send('email and password is required')
+        if (!email | !password) return res.status(400).send({message : 'email and password is required'})
         const user = await User.findOne({ email })
         console.log('user', user);
 
         if (!user) {
-            return res.status(404).json('user with the given email not found !')
+            return res.status(404).send({message : 'user with the given email not found !'})
         }
         const auth = await compare(password, user.password)
         if (!auth) {
-            return res.status(400).send('Please provide valid credientials')
+            return res.status(400).send({message : 'Please provide valid credientials'})
         }
 
         res.cookie('jwt', createToken(email, user.id), {
@@ -68,12 +72,12 @@ export const login = async (req, res, next) => {
                 image: user.image,
                 color: user.color,
                 profileSetup: user.profileSetup
-
-            }
+            },
+            message : "User logged in Successfully!"
         })
     } catch (error) {
         console.log({ error });
-        return res.status(500).send('inter server error')
+        return res.status(500).send({message : error})
 
     }
 }
