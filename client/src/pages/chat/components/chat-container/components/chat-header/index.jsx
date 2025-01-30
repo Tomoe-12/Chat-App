@@ -10,15 +10,17 @@ const ChatHeader = () => {
   const isSmall = useMediaQuery({ maxWidth: 768 });
 
   const { closeChat, selectedChatData, selectedChatType } = useAppStore();
+  console.log("data", selectedChatData);
+
   return (
     <div
-      className={`h-[8vh] border-b-2 border-[#2f303b] flex items-center ${
+      className={`h-[8vh] border-b border-[#2f303b] flex items-center bg-white ${
         !isLgOrLarger ? "px-5" : "px-16"
       } `}
     >
       {!isLgOrLarger && <SidebarTrigger className="mr-5" />}
-      <div className="flex gap-5 items-center justify-between w-full  ">
-        <div className="flex gap-3 items-center justify-center ">
+      <div className="flex gap-5 items-center justify-between w-full">
+        <div className="flex gap-3 items-center justify-center">
           <div className="w-12 h-12 relative">
             {selectedChatType === "contact" ? (
               <Avatar className="h-12 w-12 rounded-full overflow-hidden">
@@ -41,18 +43,24 @@ const ChatHeader = () => {
                 )}
               </Avatar>
             ) : (
-              <div className=" bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full ">
+              <div className=" bg-gray-500 h-11 w-11 flex items-center justify-center rounded-full ">
                 #
               </div>
             )}
           </div>
-          <div>
-            {selectedChatType === "channel" && selectedChatData.name
-              ? selectedChatData.name
-              : selectedChatData.email}
-            {selectedChatType === "contact" && selectedChatData.firstName
-              ? `${selectedChatData.firstName} ${selectedChatData.lastName}`
-              : selectedChatData.email}
+          <div className="text-gray-800">
+            {
+              selectedChatType == "channel" &&
+                selectedChatData.name &&
+                selectedChatData.name
+              // : selectedChatData.email
+            }
+            {
+              selectedChatType == "contact" &&
+                selectedChatData.firstName &&
+                `enter ${selectedChatData.firstName} ${selectedChatData.lastName}`
+              // : selectedChatData.email
+            }
           </div>
         </div>
         {!isSmall && (

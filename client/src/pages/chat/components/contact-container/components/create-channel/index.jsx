@@ -86,7 +86,8 @@ const CreateChannel = () => {
         </Tooltip>
       </TooltipProvider>
       <Dialog open={newChannelModel} onOpenChange={setNewChannelModel}>
-        <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col  ">
+        {/* <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col  "> */}
+        <DialogContent className="bg-white border-none text-gray-800 w-[400px] h-[400px] flex flex-col  ">
           <DialogHeader>
             <DialogTitle>
               Please fill up the details for new channel{" "}
@@ -96,14 +97,16 @@ const CreateChannel = () => {
           <div>
             <Input
               placeholder="Channel Name"
-              className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+              // className="rounded-lg p-6 bg-[#2c2e3b] border-none"
+              className='rounded-lg p-6 bg-[#d3d3d3] border-none'
               onChange={(e) => setChannelName(e.target.value)}
               value={channelName}
             />
           </div>
           <div>
             <MultipleSelector
-              className="rounded-lg bg-[#2c2e3b] border-none py-2 text-white"
+              // className="rounded-lg bg-[#2c2e3b] border-none py-2 text-white"
+                className='rounded-lg py-2 bg-[#d3d3d3] border-none'
               defaultOptions={allContacts}
               placeholder="Search Contacts"
               value={selectedContacts}

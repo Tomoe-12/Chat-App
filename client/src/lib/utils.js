@@ -4,7 +4,7 @@ import emptyChatAnimation from '@/assets/lottie/emptychat.json'
 import downloadingAnimation from '@/assets/lottie/downloading.json'
 import uploadingAnimation from '@/assets/lottie/uploading.json'
 import contactAnimation from '@/assets/lottie/contact.json'
-
+import started from '../assets/lottie/started.json'
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
@@ -44,4 +44,9 @@ export const animationOptions = {
     autoprefixer: true,
     animationData: emptyChatAnimation,
   },
+  started : {
+    loop: true,
+    autoprefixer: true,
+    animationData: started
+  }
 }

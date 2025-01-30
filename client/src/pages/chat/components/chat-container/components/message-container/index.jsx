@@ -11,6 +11,7 @@ import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import AnimationContainer from "@/components/AnimationContainer";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
@@ -104,7 +105,13 @@ const MessageContainer = () => {
 
   const renderMessages = () => {
     if (!selectedChatMessage || selectedChatMessage.length === 0) {
-      return <div>No messages available. put some image here </div>;
+      return <div className="lg:text-3xl text-2xl font-medium w-full h-full text-gray-800 flex flex-col items-center justify-center">
+         <AnimationContainer
+            animationType="started"
+            width={500}
+            height={500}
+          />
+        Let's get Started </div>;
     }
     let lastDate = null;
     return selectedChatMessage.map((message, i) => {
@@ -114,7 +121,7 @@ const MessageContainer = () => {
       return (
         <div key={i}>
           {showDate && (
-            <div className="text-center my-2 text-gray-500">
+            <div className="text-center my-2 text-gray-400">
               {moment(message.timestamp).format("LL")}
             </div>
           )}
@@ -212,7 +219,7 @@ const MessageContainer = () => {
             message.sender !== selectedChatData._id
               ? ` ${getColor(
                   userInfo.color
-                )} text-white rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
+                )} text-gray-800 rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
               : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
           } border inline-block p-4 rounded my-1 max-w-[70%] break-words `}
         >
@@ -401,7 +408,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <ScrollArea className="flex-1 overflow-auto scrollbar-hidden px-4 md:px-8 pb-4  w-full ">
+    <ScrollArea className="bg-white flex-1 overflow-auto scrollbar-hidden px-4 md:px-8 pb-4  w-full ">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
