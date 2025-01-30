@@ -56,7 +56,7 @@ const ContactContainer = () => {
         <Logo />
       </SidebarHeader>
       <div className="my-5">
-        <div className="flex items-center justify-between pr-10">
+        <div className="flex items-center justify-between pr-10 ">
           <Title text="Direct Messages" />
           <NewDM />
         </div>
@@ -65,11 +65,11 @@ const ContactContainer = () => {
         </SidebarMenuItem>
       </div>
       <div className="my-5">
-        <div className="flex items-center justify-between pr-10">
+        <div className="flex items-center justify-between pr-10 ">
           <Title text="Channels" />
           <CreateChannel />
         </div>
-        <SidebarMenuItem className="max-h-[38vh] overflow-y-auto scrollbar-hidden">
+        <SidebarMenuItem className="max-h-[38vh] overflow-y-auto scrollbar-hidden ">
           <ContactList contacts={channels} isChannel={true} />
         </SidebarMenuItem>
       </div>
@@ -84,7 +84,7 @@ export default ContactContainer;
 
 const Logo = () => {
   return (
-    <div className="flex p-5  justify-start items-center gap-2">
+    <div className="flex p-5   justify-start items-center gap-2">
       <svg
         id="logo-38"
         width="78"
@@ -110,13 +110,14 @@ const Logo = () => {
           fill="#4CAF50" // Green
         ></path>{" "}
       </svg>
-      <span className="text-3xl font-semibold ">THISPEAK</span>
+      <span className="text-3xl font-semibold text-gray-800 ">THISPEAK</span>
     </div>
   );
 };
 const Title = ({ text }) => {
   return (
-    <h6 className="uppercase tracking-widest text-neutral-400 pl-10 font-light text-opacity-90 text-sm">
+    // <h6 className="uppercase tracking-widest text-neutral-400 pl-10 font-light text-opacity-90 text-sm">
+    <h6 className="uppercase tracking-widest text-gray-800 pl-10 font-light text-opacity-90 text-sm">
       {text}
     </h6>
   );

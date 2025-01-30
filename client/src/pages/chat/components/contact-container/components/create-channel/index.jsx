@@ -91,7 +91,7 @@ const CreateChannel = () => {
           <DialogHeader>
             <DialogTitle>
               Please fill up the details for new channel{" "}
-            </DialogTitle>
+            </DialogTitle>  
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <div>
