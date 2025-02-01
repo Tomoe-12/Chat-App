@@ -144,11 +144,11 @@ const Profile = () => {
         <div onClick={handleNavigate}>
           <IoArrowBack className="text-4xl lg:text-5xl text-black cursor-pointer " />
         </div>
-        <div className="grid grid-cols-2">
+        <div className="grid md:grid-cols-2 md:gap-0 gap-4 items-center  ">
 
           {/* avatar */}
           <div
-            className="h-full w-32 md:w-48 md:h-48 relative flex items-center justify-center"
+            className="h-full md:w-48 md:h-48   relative w-full flex items-center justify-center"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
@@ -226,7 +226,7 @@ const Profile = () => {
                 className={`rounded-lg border border-gray-400 focus:border-none text-black `}
               />
             </div>
-            <div className="w-full flex gap-5 ">
+            <div className="w-full flex gap-5">
               {colors.map((color, index) => (
                 <div
                   className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-200
@@ -245,7 +245,7 @@ const Profile = () => {
         </div>
         <div className="w-full">
           <Button
-            className={`h-16 w-full bg-${getColor(selectedColor)} hover:bg-${getColor(selectedColor)}/20 transition-all duration-200  ${getColor(
+            className={`md:h-16 h-10 w-full bg-${getColor(selectedColor)} hover:bg-${getColor(selectedColor)}/20 transition-all duration-200  ${getColor(
               selectedColor
             )}`}
             onClick={saveChanges}
