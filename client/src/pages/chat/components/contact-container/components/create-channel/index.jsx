@@ -87,7 +87,7 @@ const CreateChannel = () => {
       </TooltipProvider>
       <Dialog open={newChannelModel} onOpenChange={setNewChannelModel}>
         {/* <DialogContent className="bg-[#181920] border-none text-white w-[400px] h-[400px] flex flex-col  "> */}
-        <DialogContent className="bg-white border-none text-gray-600 w-[400px] h-[400px] flex flex-col  ">
+        <DialogContent className="bg-white border-none text-gray-600 md-w-[400px] w-[350px] h-[400px] flex flex-col rounded-lg  ">
           <DialogHeader>
             <DialogTitle>
               Please fill up the details for new channel{" "}
