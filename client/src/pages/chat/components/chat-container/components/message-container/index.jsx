@@ -220,7 +220,7 @@ const MessageContainer = () => {
               ? ` ${getColor(
                   userInfo.color
                 )} text-gray-600 rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
-              : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
+              : " bg-gray-200 text-black/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
           } border inline-block p-4 rounded my-1 max-w-[70%] break-words `}
         >
           {message.content}
@@ -233,7 +233,7 @@ const MessageContainer = () => {
               ? ` ${getColor(
                   userInfo.color
                 )} text-white rounded-3xl rounded-br-none`
-              : " bg-[#2a2b33]/5 text-white border-[#ffffff]/20 rounded-3xl rounded-bl-none"
+              : " bg-gray-200 text-black/80 border-[#ffffff]/20 rounded-3xl rounded-bl-none"
           } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
         >
           {checkIfImage(message.fileURL) ? (
@@ -261,7 +261,7 @@ const MessageContainer = () => {
               className="flex items-center justify-center gap-4"
               id="file-name-container"
             >
-              <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
+              <span className="text-black/80 text-3xl bg-black/20 rounded-full p-3">
                 <MdFolderZip />
               </span>
               {/* Truncate file name based on container width */}
@@ -304,8 +304,8 @@ const MessageContainer = () => {
               message.sender._id === userInfo.id
                 ? ` ${getColor(
                     userInfo.color
-                  )} text-white rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
-                : " bg-[#2a2b33]/5 text-white/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
+                  )} text-black/80 rounded-3xl rounded-br-none    ` // text-[#8417ff]/90 border-[#8417ff]/50
+                : " bg-gray-200 text-black/80 border-[#ffffff]/20  rounded-3xl rounded-bl-none  "
             } border inline-block p-4 rounded my-1 max-w-[70%] break-words ml-9 `}
           >
             {message.content}
@@ -318,7 +318,7 @@ const MessageContainer = () => {
                 ? ` ${getColor(
                     userInfo.color
                   )} text-white rounded-3xl rounded-br-none`
-                : " bg-[#2a2b33]/5 text-white border-[#ffffff]/20 rounded-3xl rounded-bl-none"
+                : " bg-gray-200 text-black/80 border-[#ffffff]/20 rounded-3xl rounded-bl-none"
             } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
           >
             {checkIfImage(message.fileURL) ? (
@@ -346,7 +346,7 @@ const MessageContainer = () => {
                 className="flex items-center justify-center gap-4"
                 id="file-name-container"
               >
-                <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
+                <span className="text-black/80 text-3xl bg-black/20 rounded-full p-3">
                   <MdFolderZip />
                 </span>
                 {/* Truncate file name based on container width */}
@@ -391,14 +391,14 @@ const MessageContainer = () => {
                   : message.sender.email}
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm text-white/60">{`${message.sender.firstName} ${message.sender.lastName}`}</span>
-            <span className="text-xs text-white/60  ">
+            <span className="text-sm text-black/60">{`${message.sender.firstName} ${message.sender.lastName}`}</span>
+            <span className="text-xs text-black/60  ">
               {moment(message.timestamp).format("LT")}
             </span>
           </div>
         ) : (
           <>
-            <div className="text-xs mt-1 text-white/60  ">
+            <div className="text-xs mt-1 text-black/60  ">
               {moment(message.timestamp).format("LT")}
             </div>
           </>

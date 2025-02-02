@@ -58,7 +58,7 @@ const ChatHeader = () => {
             {
               selectedChatType == "contact" &&
                 selectedChatData.firstName &&
-                `enter ${selectedChatData.firstName} ${selectedChatData.lastName}`
+                `${selectedChatData.firstName} ${selectedChatData.lastName}`
               // : selectedChatData.email
             }
           </div>
