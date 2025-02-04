@@ -110,12 +110,12 @@ const MessageBar = () => {
 
   return (
     // <div className="h-[8vh] bg-[#1c1d25] flex justify-center items-center md:px-8 px-4 mb-3 gap-6 ">
-    <div className="h-[8vh] bg-white flex justify-center items-center md:px-8 px-4 mb-3 gap-6 ">
+    <div className="h-[8vh] flex justify-center items-center md:px-8 px-3 mb-3 md:gap-6 gap-3 ">
       {/* <div className="flex-1 flex bg-[#2a2b33] rounded-md justify-center items-center gap-5 pr-5  "> */}
-      <div className="flex-1 flex text-black border border-gray-400  bg-white rounded-md justify-center items-center gap-5 pr-5  ">
+      <div className="flex-1  flex text-black border border-gray-400  bg-white rounded-md justify-center items-center md:gap-5 gap-3 md:pr-5 pr-2  ">
         <input
           type="text"
-          className="flex-1 p-4 md:p-5 w-fit bg-transparent rounded-md focus:border-none focus:outline-none  "
+          className="flex-1 p-3 md:p-5 w-fit bg-transparent rounded-md focus:border-none focus:outline-none  "
           placeholder="Enter Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -124,7 +124,7 @@ const MessageBar = () => {
           className="text-neutral-500 focus:border-none hover:text-primaryColor duration-300 transition-all"
           onClick={handleAttachmentClick}
         >
-          <GrAttachment className="text-2xl " />
+          <GrAttachment className="text-xl md:text-2xl " />
         </button>
         <input
           type="file"
@@ -137,7 +137,7 @@ const MessageBar = () => {
             className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all "
             onClick={() => setEmojiPickerOpen(true)}
           >
-            <RiEmojiStickerLine className="text-2xl" />
+            <RiEmojiStickerLine className="text-xl md:text-2xl" />
           </button>
           {emojiPickerOpen && (
             <div className="absolute bottom-16 right-0 " ref={emojiRef}>
