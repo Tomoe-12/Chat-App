@@ -7,11 +7,13 @@ import { useAppStore } from './store'
 import { apiClient } from './lib/api-client'
 import { GET_USER_INFO } from './utils/constants'
 
+// eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children }) => {
   const { userInfo } = useAppStore()
   return userInfo ? children : <Navigate to='/auth' />
 }
 
+// eslint-disable-next-line react/prop-types
 const AuthRoute = ({ children }) => {
   const { userInfo } = useAppStore()
   return userInfo ? <Navigate to='/chat' /> : children
