@@ -18,6 +18,7 @@ const Auth = () => {
   const [loginemail, setloginemail] = useState("");
   const [loginpass, setloginpass] = useState("");
   const [confirmPass, setconfirmPass] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validateLogin = () => {
     if (!loginemail.length || !loginpass.length) {
@@ -83,6 +84,7 @@ const Auth = () => {
 
   const handleLogin = async () => {
     if (validateLogin()) {
+      setLoading(true)
       try {
         const res = await apiClient.post(
           LOGIN_ROUTE,
@@ -133,12 +135,15 @@ const Auth = () => {
             color: "red",
           },
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const handlesSignup = async () => {
     if (validateSignUp()) {
+      setLoading(true)
       try {
         const res = await apiClient.post(
           SIGNUP_ROUTE,
@@ -170,6 +175,8 @@ const Auth = () => {
             color: "red",
           },
         });
+      }finally{
+        setLoading(false)
       }
     }
   };
@@ -178,7 +185,7 @@ const Auth = () => {
     <div className="h-[100vh] w-[100vw] flex items-center justify-center bg-backgroundColor">
       <div className="h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2">
         <div className="flex flex-col gap-10 items-center justify-center">
-          <div className="flex items-center justify-center flex-col">
+          <div className="flex  items-center justify-center flex-col">
             <div className="flex items-center justify-center ">
               <h1 className="md:text-5xl text-4xl text-textColor font-bold lg:text-6xl ">
                 Welcome
@@ -190,7 +197,7 @@ const Auth = () => {
             </p>
           </div>
           <div className="flex items-center justify-center w-full">
-            <Tabs className="w-3/4" defaultValue="login">
+            <Tabs className="w-full md:w-3/4 md:px-0 px-5 " defaultValue="login">
               <TabsList className="bg-transparent rounded-none w-full">
                 <TabsTrigger
                   value="login"
@@ -224,8 +231,8 @@ const Auth = () => {
                   onChange={(e) => setloginpass(e.target.value)}
                 />
 
-                <Button className="rounded-full p-6" onClick={handleLogin}>
-                  Login
+                <Button className="rounded-full p-6" onClick={handleLogin} disabled={loading} >
+                  {loading ?"Logging in..." : "Login"}
                 </Button>
               </TabsContent>
 
@@ -251,8 +258,8 @@ const Auth = () => {
                   value={confirmPass}
                   onChange={(e) => setconfirmPass(e.target.value)}
                 />
-                <Button className="rounded-full p-6" onClick={handlesSignup}>
-                  Sign Up
+                <Button className="rounded-full p-6" onClick={handlesSignup} disabled={loading}>
+                 {loading ?"Signing up..." : "Sign Up"}
                 </Button>
               </TabsContent>
             </Tabs>

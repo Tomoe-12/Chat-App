@@ -50,6 +50,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<PrivateRoute><Chat /></PrivateRoute>} />
         <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
         <Route path="/chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
         <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
