@@ -26,6 +26,7 @@ const Profile = () => {
   const [hovered, setHovered] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);
   const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(false);
   console.log("user image", userInfo.image);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const Profile = () => {
 
   const saveChanges = async () => {
     if (validateProfile()) {
+      setLoading(true);
       try {
         const res = await apiClient.post(
           UPDATE_PROFILE_ROUTE,
@@ -73,6 +75,8 @@ const Profile = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -95,6 +99,7 @@ const Profile = () => {
   };
 
   const handleImageChange = async (event) => {
+    setLoading(true);
     const file = event.target.files[0];
     if (file) {
       const formData = new FormData();
@@ -112,12 +117,15 @@ const Profile = () => {
       } catch (error) {
         console.error(error);
         toast.error("Error updating image");
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const handleDeleteImage = async () => {
     try {
+      setLoading(true);
       const res = await apiClient.delete(REMOVE_ROFILE_IMAGE_ROUTE, {
         withCredentials: true,
       });
@@ -133,6 +141,8 @@ const Profile = () => {
       toast.error("Error removing image", {
         style: { border: "1px solid red", color: "red" },
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,14 +155,12 @@ const Profile = () => {
           <IoArrowBack className="text-4xl lg:text-5xl text-black cursor-pointer " />
         </div>
         <div className="grid md:grid-cols-2 md:gap-0 gap-4 items-center  ">
-
           {/* avatar */}
           <div
-            className="h-full md:w-48 md:h-48   relative w-full flex items-center justify-center"
+            className="h-full md:w-48 md:h-48 relative w-full flex items-center justify-center"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-          
             <Avatar className="h-32 w-32 md:w-48 md:h-48 rounded-full overflow-hidden">
               {image ? (
                 <AvatarImage
@@ -174,7 +182,7 @@ const Profile = () => {
             </Avatar>
             {hovered && (
               <div
-                className="absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 cursor-pointer rounded-full"
+                className="absolute m-auto  h-32 w-32 md:w-48 md:h-48 inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 cursor-pointer rounded-full"
                 onClick={image ? handleDeleteImage : handleFileInputClick}
               >
                 {image ? (
@@ -245,12 +253,15 @@ const Profile = () => {
         </div>
         <div className="w-full">
           <Button
-            className={`md:h-16 h-10 w-full bg-${getColor(selectedColor)} hover:bg-${getColor(selectedColor)}/20 transition-all duration-200  ${getColor(
+            disabled={loading}
+            className={`md:h-16 h-10 w-full bg-${getColor(
               selectedColor
-            )}`}
+            )} hover:bg-${getColor(
+              selectedColor
+            )}/20 transition-all duration-200  ${getColor(selectedColor)}`}
             onClick={saveChanges}
           >
-            Save Changes
+            {loading ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>
