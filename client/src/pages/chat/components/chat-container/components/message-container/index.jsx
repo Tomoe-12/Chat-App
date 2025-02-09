@@ -232,7 +232,7 @@ const MessageContainer = () => {
             message.sender !== selectedChatData._id
               ? ` ${getColor(
                   userInfo.color
-                )} text-white rounded-3xl rounded-br-none`
+                )} text-black/80 rounded-3xl rounded-br-none`
               : " bg-gray-200 text-black/80 border-[#ffffff]/20 rounded-3xl rounded-bl-none"
           } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
         >
@@ -317,7 +317,7 @@ const MessageContainer = () => {
               message.sender !== selectedChatData._id
                 ? ` ${getColor(
                     userInfo.color
-                  )} text-white rounded-3xl rounded-br-none`
+                  )} text-black/80 rounded-3xl rounded-br-none`
                 : " bg-gray-200 text-black/80 border-[#ffffff]/20 rounded-3xl rounded-bl-none"
             } border inline-block p-2 rounded my-1 max-w-[70%] break-words `}
           >
